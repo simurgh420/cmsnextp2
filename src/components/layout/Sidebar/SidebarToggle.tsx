@@ -11,8 +11,8 @@ export const SidebarToggle: FC<Props> = ({ onClick }) => {
     <button
       onClick={onClick}
       className="p-2 text-white bg-gray-900 rounded-md md:hidden"
-      >
-          <MdMenu size={24} />
+    >
+      <MdMenu size={24} />
     </button>
   );
 };

@@ -31,7 +31,7 @@ export const Sidebar: FC = () => {
     ${isOpen ? 'fixed top-0 right-0 w-64 h-full' : 'fixed top-0 right-0 w-64 h-full translate-x-full'}
     md:w-64`}
       >
-        <div className="p-4 text-lg font-bold border-b border-gray-700">
+        <div className="p-4 text-lg font-bold border-b border-gray-700 ml-5">
           پنل مدیریت
         </div>
         <nav className="flex-1 p-2 space-y-1">
