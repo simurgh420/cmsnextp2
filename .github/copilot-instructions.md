@@ -55,6 +55,7 @@ No tests configured; add Vitest/Jest if needed, place in `__tests__/` or colocat
 - **External**: No auth (add NextAuth.js). Images in `public/` (noImage.jpg fallback). Future: API routes for CRUD, upload to cloud (e.g., Uploadthing).
 
 Key files:
+
 - `prisma/schema.prisma`: DB models.
 - `src/app/(admin)/products/page.tsx`: List with mocks/stats.
 - `src/components/products/ProductForm.tsx`: Form with validation.
