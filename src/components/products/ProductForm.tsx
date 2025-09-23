@@ -5,94 +5,162 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import {
   Select,
-  SelectTrigger,
-  SelectValue,
   SelectContent,
   SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@/components/ui/select';
 import Link from 'next/link';
-import { Product } from '@/application/products/products.types';
+import { Product } from '@prisma/client';
+import { Status } from '@prisma/client';
+import Image from 'next/image';
+export type ProductFormData = {
+  name: string;
+  price: number;
+  status: Status;
+  image?: string | null;
+};
 const schema = z.object({
   name: z.string().min(2, 'نام محصول الزامی است'),
   price: z.number().min(1000, 'قیمت باید بیشتر از 1000 باشد'),
-  status: z.enum(['active', 'inactive']),
+  status: z.nativeEnum(Status),
+  image: z.string().url('لینک عکس معتبر نیست').optional(),
 });
 
 type FormData = z.infer<typeof schema>;
 type Props = {
-  initialData?: Product; // برای ویرایش
-  onSubmit: (data: Omit<Product, 'id'>) => void;
+  initialData?: Partial<Product>; // برای ویرایش
+  onSubmit: (data: ProductFormData) => void | Promise<void>;
 };
 
 export const ProductForm: FC<Props> = ({ initialData, onSubmit }) => {
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: initialData ?? { name: '', price: 0, status: 'active' },
+    defaultValues: {
+      name: initialData?.name ?? '',
+      price: initialData?.price ?? 0,
+      status: initialData?.status ?? 'ACTIVE',
+      image: initialData?.image ?? undefined,
+    },
   });
 
   return (
-    <form
-      onSubmit={form.handleSubmit(onSubmit)}
-      className="space-y-4 bg-white p-6 rounded shadow"
-    >
-      {/* نام محصول */}
-      <div>
-        <label className="block text-sm font-medium mb-1">نام محصول</label>
-        <Input {...form.register('name')} placeholder="مثلاً گوشی موبایل" />
-        {form.formState.errors.name && (
-          <p className="text-red-500 text-xs mt-1">
-            {form.formState.errors.name.message}
-          </p>
-        )}
-      </div>
-
-      {/* قیمت */}
-      <div>
-        <label className="block text-sm font-medium mb-1">قیمت (تومان)</label>
-        <Input
-          type="number"
-          {...form.register('price', { valueAsNumber: true })}
-          placeholder="مثلاً 12000000"
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-6 bg-white p-6 rounded-lg shadow-md"
+      >
+        {/* نام محصول */}
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>نام محصول</FormLabel>
+              <FormControl>
+                <Input placeholder="مثلاً گوشی موبایل" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-        {form.formState.errors.price && (
-          <p className="text-red-500 text-xs mt-1">
-            {form.formState.errors.price.message}
-          </p>
-        )}
-      </div>
 
-      {/* وضعیت */}
-      <div>
-        <label className="block text-sm font-medium mb-1">وضعیت</label>
-        <Select
-          onValueChange={(val) =>
-            form.setValue('status', val as 'active' | 'inactive')
-          }
-          defaultValue="active"
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="انتخاب وضعیت" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="active">فعال</SelectItem>
-            <SelectItem value="inactive">غیرفعال</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+        {/* قیمت */}
+        <FormField
+          control={form.control}
+          name="price"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>قیمت (تومان)</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  placeholder="مثلاً 12000000"
+                  {...field}
+                  value={field.value ?? ''}
+                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      <div className="flex gap-4">
-        <Button type="submit" className="flex-1">
-          ذخیره محصول
-        </Button>
-        <Link href="/products">
-          <Button type="button" variant="outline" className="flex-1">
-            انصراف
+        {/* وضعیت */}
+        <FormField
+          control={form.control}
+          name="status"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>وضعیت</FormLabel>
+              <FormControl>
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="انتخاب وضعیت" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value={Status.ACTIVE}>فعال</SelectItem>
+                    <SelectItem value={Status.INACTIVE}>غیرفعال</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* عکس محصول */}
+        <FormField
+          control={form.control}
+          name="image"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>لینک عکس محصول (اختیاری)</FormLabel>
+              <FormControl>
+                <div>
+                  <Input
+                    placeholder="https://example.com/image.jpg"
+                    {...field}
+                  />
+                  {field.value && field.value.startsWith('http') && (
+                    <Image
+                      width={300}
+                      height={300}
+                      src={field.value}
+                      alt="پیش‌نمایش محصول"
+                      className="w-32 h-32 object-cover rounded border"
+                    />
+                  )}
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <div className="flex gap-4 pt-4">
+          <Button type="submit" className="flex-1">
+            ذخیره محصول
           </Button>
-        </Link>
-      </div>
-    </form>
+          <Link href="/products">
+            <Button type="button" variant="outline" className="flex-1">
+              انصراف
+            </Button>
+          </Link>
+        </div>
+      </form>
+    </Form>
   );
 };

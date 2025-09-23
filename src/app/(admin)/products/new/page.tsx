@@ -4,14 +4,26 @@ import { FC } from 'react';
 import { Button } from '@/components/ui/button';
 import { FaArrowRight } from 'react-icons/fa';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { ProductForm } from '@/components/products/ProductForm';
-import { Product } from '@/application/products/products.types';
+import { ProductFormData } from '@/lib/types';
 
 const NewProductPage: FC = () => {
-  const handleSubmit = (data: Omit<Product, 'id'>) => {
-    console.log('محصول جدید:', data);
-    // اینجا بعداً به API وصل می‌کنیم
-    // بعد از ذخیره موفق، به لیست محصولات برگردیم
+  const router = useRouter();
+  const handleSubmit = async (data: ProductFormData) => {
+    const res = await fetch('/api/products', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    if (res.ok) {
+      router.push('/products');
+      router.refresh();
+    } else {
+      alert('خطا در ثبت محصول');
+    }
   };
 
   return (
