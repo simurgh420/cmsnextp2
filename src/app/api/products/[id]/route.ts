@@ -3,9 +3,9 @@ import { NextResponse } from 'next/server';
 
 export async function GET(
   req: Request,
-  context: { params: Promise<{ id: string }> },
+  { params }: { params: Promise<{ id: string }> },
 ) {
-  const { id } = await context.params;
+  const { id } = await params;
   const product = await prisma.product.findUnique({
     where: { id },
   });
@@ -18,10 +18,10 @@ export async function GET(
 
 export async function PUT(
   req: Request,
-  context: { params: Promise<{ id: string }> },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const body = await req.json();
-  const { id } = await context.params;
+  const { id } = await params;
   const product = await prisma.product.update({
     where: { id },
     data: {
@@ -35,9 +35,9 @@ export async function PUT(
 }
 export async function DELETE(
   req: Request,
-  context: { params: Promise<{ id: string }> },
+  { params }: { params: Promise<{ id: string }> },
 ) {
-  const { id } = await context.params;
+  const { id } = await params;
   await prisma.product.delete({
     where: { id },
   });
