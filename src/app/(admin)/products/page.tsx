@@ -1,10 +1,11 @@
-import { FC } from 'react';
+import { FC, Suspense } from 'react';
 import { ProductsTable } from '@/components/products/ProductsTable';
 import { Button } from '@/components/ui/button';
 import { FaPlus } from 'react-icons/fa';
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { Status } from '@prisma/client';
+import { ProductTableSkeleton } from '@/components/products/product-table-skeleton';
 const ProductsPage = async () => {
   const products = await prisma.product.findMany();
 
@@ -52,7 +53,9 @@ const ProductsPage = async () => {
           <h2 className="text-lg font-semibold text-gray-900">لیست محصولات</h2>
         </div>
         <div className="overflow-x-auto">
-          <ProductsTable products={products} />
+          <Suspense fallback={<ProductTableSkeleton rows={8} />}>
+            <ProductsTable products={products} />
+          </Suspense>
         </div>
       </div>
     </div>

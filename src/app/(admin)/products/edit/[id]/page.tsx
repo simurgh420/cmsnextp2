@@ -13,16 +13,22 @@ export default function EditProductClient({ product }: Props) {
   const router = useRouter();
 
   const handleSubmit = async (data: ProductFormData) => {
-    const res = await fetch(`/api/products/${product.id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-    if (res.ok) {
-      router.push('/products');
-      router.refresh();
-    } else {
-      console.error('Update failed');
+    try {
+      const res = await fetch(`/api/products/${product.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (res.ok) {
+        router.push('/products');
+        router.refresh();
+      } else {
+        const errorData = await res.json().catch(() => ({}));
+        console.error('Update failed:', errorData.error || res.statusText);
+      }
+    } catch (error) {
+      console.error('Network or server error:', error);
     }
   };
 

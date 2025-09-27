@@ -1,6 +1,6 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -31,14 +30,16 @@ export type ProductFormData = {
   price: number;
   status: Status;
   image?: string | null;
+  categoryId: string;
 };
 const schema = z.object({
   name: z.string().min(2, 'نام محصول الزامی است'),
   price: z.number().min(1000, 'قیمت باید بیشتر از 1000 باشد'),
   status: z.nativeEnum(Status),
   image: z.string().url('لینک عکس معتبر نیست').optional(),
+  categoryId: z.string().min(1, 'انتخاب دسته‌بندی الزامی است'),
 });
-
+type Category = { id: string; name: string };
 type FormData = z.infer<typeof schema>;
 type Props = {
   initialData?: Partial<Product>; // برای ویرایش
@@ -46,6 +47,12 @@ type Props = {
 };
 
 export const ProductForm: FC<Props> = ({ initialData, onSubmit }) => {
+  const [categories, setCategories] = useState<Category[]>([]);
+  useEffect(() => {
+    fetch('/api/categories')
+      .then((res) => res.json())
+      .then((data) => setCategories(data));
+  }, []);
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -117,6 +124,30 @@ export const ProductForm: FC<Props> = ({ initialData, onSubmit }) => {
                 </Select>
               </FormControl>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+        {/* دسته بندی */}
+        <FormField
+          control={form.control}
+          name="categoryId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>دسته‌بندی</FormLabel>
+              <FormControl>
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="انتخاب دسته‌بندی" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map((cate) => (
+                      <SelectItem key={cate.id} value={cate.id}>
+                        {cate.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
             </FormItem>
           )}
         />

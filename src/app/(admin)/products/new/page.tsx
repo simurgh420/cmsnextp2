@@ -11,18 +11,24 @@ import { ProductFormData } from '@/lib/types';
 const NewProductPage: FC = () => {
   const router = useRouter();
   const handleSubmit = async (data: ProductFormData) => {
-    const res = await fetch('/api/products', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-    if (res.ok) {
-      router.push('/products');
-      router.refresh();
-    } else {
-      alert('خطا در ثبت محصول');
+    try {
+      const res = await fetch('/api/products', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      if (res.ok) {
+        router.push('/products');
+        router.refresh();
+      } else {
+        const errorData = await res.json().catch(() => ({}));
+        alert(errorData.error || 'خطا در ثبت محصول');
+      }
+    } catch (error) {
+      console.error('Network or server error:', error);
+      alert('ارتباط با سرور برقرار نشد');
     }
   };
 
