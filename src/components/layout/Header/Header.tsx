@@ -4,9 +4,18 @@ import { FC, useState } from 'react';
 import { MdShuffle, MdNotifications } from 'react-icons/md';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import {
+  useUser,
+  UserButton,
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignUpButton,
+} from '@clerk/nextjs';
 
 export const Header: FC = () => {
   const [expanded, setExpanded] = useState(false);
+  const { user } = useUser();
   return (
     <header className="w-full bg-white border-b px-4 py-3 flex items-center justify-between rtl">
       {/* سمت چپ: آیکون‌ها و جستجو */}
@@ -41,14 +50,30 @@ export const Header: FC = () => {
 
       {/* سمت راست: پروفایل کاربر */}
       <div className="flex items-center gap-3">
-        <Avatar>
-          <AvatarImage src="/avatar.jpg" alt="محمدرضا" />
-          <AvatarFallback>MR</AvatarFallback>
-        </Avatar>
-        <div className="text-right">
-          <div className="text-sm font-medium text-gray-800">محمدرضا</div>
-          <div className="text-xs text-gray-500">مدیر سیستم</div>
-        </div>
+        <SignedIn>
+          {/* وقتی کاربر لاگین هست */}
+          <UserButton afterSwitchSessionUrl="/" />
+          <div className="text-right">
+            <div className="text-sm font-medium text-gray-800">
+              {user?.fullName || user?.username || 'کاربر'}
+            </div>
+
+            <div className="text-xs text-gray-500">حساب کاربری</div>
+          </div>
+        </SignedIn>
+        <SignedOut>
+          {/* وقتی کاربر لاگین نیست */}
+          <SignInButton>
+            <Button size="sm" variant="secondary">
+              ورود
+            </Button>
+          </SignInButton>
+          <SignUpButton>
+            <Button size="sm" variant="outline">
+              ثبت‌نام
+            </Button>
+          </SignUpButton>
+        </SignedOut>
       </div>
     </header>
   );

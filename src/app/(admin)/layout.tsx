@@ -1,12 +1,9 @@
-import { FC, ReactNode } from 'react';
-type Props = {
-  children: ReactNode;
-};
+import React from 'react';
 
-export default function AdminLayout({ children }: Props) {
-  return (
-    <div className="bg-gray-50 antialiased">
-      <body>{children}</body>
-    </div>
-  );
+export default function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <div className="bg-gray-50 antialiased min-h-screen">{children}</div>;
 }
