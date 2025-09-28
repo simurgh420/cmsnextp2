@@ -9,8 +9,8 @@ export default async function CommentsPage() {
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">مدیریت کامنت‌ها</h1>
       <Link href="/comments/new">
-          <Button>ایجاد کامنت جدید</Button>
-        </Link>
+        <Button>ایجاد کامنت جدید</Button>
+      </Link>
       <CommentsTable comments={comments} />
     </div>
   );
