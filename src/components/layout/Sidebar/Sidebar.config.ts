@@ -6,6 +6,7 @@ import {
   MdPeople,
   MdBarChart,
   MdSettings,
+  MdComment,
 } from 'react-icons/md';
 import { FaBox } from 'react-icons/fa';
 export const sidebarItems: SidebarItemType[] = [
@@ -14,6 +15,7 @@ export const sidebarItems: SidebarItemType[] = [
   { label: 'دسته‌بندی‌ها', href: '/categories', icon: MdCategory },
   { label: 'سفارش‌ها', href: '/orders', icon: MdShoppingCart },
   { label: 'مشتریان', href: '/customers', icon: MdPeople },
+  { label: 'کامنت‌ها', href: '/comments', icon: MdComment },
   { label: 'گزارش‌ها', href: '/reports', icon: MdBarChart },
   { label: 'تنظیمات', href: '/settings', icon: MdSettings },
 ];

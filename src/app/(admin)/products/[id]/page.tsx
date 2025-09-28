@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import EditProductClient from '../edit/[id]/page';
-
+import { auth } from '@clerk/nextjs/server';
 export default async function EditProductPage({
   params,
 }: {
@@ -22,5 +22,10 @@ export default async function EditProductPage({
     );
   }
 
-  return <EditProductClient product={product} />;
+  return (
+    <div className="space-y-8">
+      {/* بخش ویرایش محصول */}
+      <EditProductClient product={product} />;
+    </div>
+  );
 }

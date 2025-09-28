@@ -32,6 +32,7 @@ model Product {
     category   Category? @relation(fields: [categoryId], references: [id])
   @@map("products")
   @@index([categoryId])
+  comments Comment[]
 }
 model Category{
   id String @id @default(cuid())
@@ -42,4 +43,20 @@ model Category{
   products  Product[]
  @@map("categories")
 
+}
+enum CommentStatus {
+  PENDING   // در انتظار تأیید
+  APPROVED  // تأیید شده
+  REJECTED  // رد شده
+}
+
+model Comment {
+  id        String        @id @default(cuid())
+  content   String
+  status    CommentStatus @default(PENDING)
+  userId    String        // Clerk userId
+  productId String?
+  product   Product?       @relation(fields: [productId],references: [id])
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
 }
