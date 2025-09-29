@@ -1,3 +1,4 @@
+import DeleteCategoryButton from '@/components/categories/DeleteCategoryButton';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 
@@ -41,6 +42,13 @@ const CategoriesPage = async () => {
                 >
                   ویرایش
                 </Link>
+                <Link
+                  href={`/categories/${cate.id}/edit`}
+                  className="text-sm font-medium text-blue-600 hover:text-blue-800"
+                >
+                  ویرایش
+                </Link>
+                <DeleteCategoryButton id={cate.id} />
               </li>
             ))}
           </ul>

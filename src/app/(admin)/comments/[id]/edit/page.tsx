@@ -20,7 +20,6 @@ export default async function EditCommentPage({
     userId: string;
     productId: string;
   }) {
-    'use server';
     await prisma.comment.update({
       where: { id },
       data,
