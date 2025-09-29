@@ -4,16 +4,21 @@ import { Comment, Product } from '@prisma/client';
 import { TableCell, TableRow } from '@/components/ui/table';
 import CommentActions from './CommentActions';
 
-type CommentWithProduct = Comment & { product?: Product | null };
+type CommentWithExtras = Comment & {
+  product?: Product | null;
+  userName?: string; // 👈 اضافه شد
+};
 
 export default function CommentRow({
   comment,
 }: {
-  comment: CommentWithProduct;
+  comment: CommentWithExtras;
 }) {
   return (
     <TableRow>
-      <TableCell className="text-right">{comment.userId}</TableCell>
+      <TableCell className="text-right">
+        {comment.userName ?? 'کاربر ناشناس'}
+      </TableCell>
       <TableCell className="text-right">{comment.content}</TableCell>
       <TableCell className="text-right">
         {comment.product?.name ?? '—'}

@@ -1,6 +1,5 @@
 'use client';
 import { useForm } from 'react-hook-form';
-import { useAuth } from '@clerk/nextjs';
 import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -29,15 +28,13 @@ type CommentFormProps = {
 
 export default function CommentForm({
   products,
-  users = [],
   initialData,
   onSubmit,
 }: CommentFormProps) {
-  const form = useForm<CommentSchema>({
+  const form = useForm<Omit<CommentSchema, 'userId'>>({
     resolver: zodResolver(commentSchema),
     defaultValues: {
       content: initialData?.content ?? '',
-      userId: initialData?.userId ?? undefined, // 👈 null → undefined
       productId: initialData?.productId ?? '',
     },
   });
@@ -87,36 +84,7 @@ export default function CommentForm({
             </FormItem>
           )}
         />
-        {/* انتخاب کاربر (اختیاری) */}
-        {users.length > 0 && (
-          <FormField
-            control={form.control}
-            name="userId"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>انتخاب کاربر</FormLabel>
-                <FormControl>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value ?? undefined}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="انتخاب کاربر" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {users.map((u) => (
-                        <SelectItem key={u.id} value={u.id}>
-                          {u.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
+
         <Button type="submit" disabled={form.formState.isSubmitting}>
           {form.formState.isSubmitting ? 'در حال ذخیره...' : 'ذخیره'}
         </Button>

@@ -1,9 +1,11 @@
 import { prisma } from '@/lib/prisma';
 import { CommentStatus } from '@prisma/client';
+import { clerkClient } from '@clerk/nextjs/server';
+import type { User } from '@clerk/nextjs/server';
 
 // لیست کامنت‌های تأیید شده برای یک محصول
 export async function listCommentsByProduct(productId: string) {
-  return prisma.comment.findMany({
+  return await prisma.comment.findMany({
     where: { productId, status: 'APPROVED' },
     orderBy: { createdAt: 'desc' },
   });
@@ -11,10 +13,21 @@ export async function listCommentsByProduct(productId: string) {
 
 // لیست همه کامنت‌ها (ادمین → شامل Pending و Rejected)
 export async function listAllComments() {
-  return prisma.comment.findMany({
+  const comments = await prisma.comment.findMany({
     orderBy: { createdAt: 'desc' },
     include: { product: true }, // برای نمایش نام محصول همزمان
   });
+  const userIds = comments.map((c) => c.userId).filter(Boolean) as string[];
+  const client = await clerkClient();
+  const { data: users } = await client.users.getUserList({
+    userId: userIds,
+  });
+
+  return comments.map((c) => ({
+    ...c,
+    userName:
+      users.find((u: User) => u.id === c.userId)?.fullName ?? 'کاربر ناشناس',
+  }));
 }
 
 // ایجاد کامنت جدید

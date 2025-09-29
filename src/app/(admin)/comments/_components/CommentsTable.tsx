@@ -10,12 +10,15 @@ import {
 } from '@/components/ui/table';
 import CommentRow from './CommentRow';
 
-type CommentWithProduct = Comment & { product?: Product | null };
+type CommentWithExtras = Comment & {
+  product?: Product | null;
+  userName?: string; // 👈 اضافه شد
+};
 
 export default function CommentsTable({
   comments,
 }: {
-  comments: CommentWithProduct[];
+  comments: CommentWithExtras[];
 }) {
   return (
     <Table>

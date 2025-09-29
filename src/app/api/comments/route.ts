@@ -6,6 +6,7 @@ import {
 } from '@/application/services/comments';
 import { commentSchema } from '@/lib/validations/comment';
 import { ZodError } from 'zod';
+import { auth } from '@clerk/nextjs/server';
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
@@ -27,9 +28,10 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
     const data = commentSchema.parse(body);
+    const { userId } = await auth();
     const newComment = await createComment({
       content: data.content,
-      userId: data.userId ?? null, // 👈 اگر undefined بود، null ذخیره میشه
+      userId: userId ?? null, // 👈 اگر undefined بود، null ذخیره میشه
       productId: data.productId,
     });
     return NextResponse.json(newComment, { status: 201 });
