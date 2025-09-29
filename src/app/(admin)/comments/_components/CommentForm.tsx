@@ -33,12 +33,11 @@ export default function CommentForm({
   initialData,
   onSubmit,
 }: CommentFormProps) {
-  const { userId } = useAuth();
   const form = useForm<CommentSchema>({
     resolver: zodResolver(commentSchema),
     defaultValues: {
       content: initialData?.content ?? '',
-      userId: userId ?? '',
+      userId: initialData?.userId ?? undefined, // 👈 null → undefined
       productId: initialData?.productId ?? '',
     },
   });
@@ -97,7 +96,10 @@ export default function CommentForm({
               <FormItem>
                 <FormLabel>انتخاب کاربر</FormLabel>
                 <FormControl>
-                  <Select onValueChange={field.onChange} value={field.value}>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value ?? undefined}
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="انتخاب کاربر" />
                     </SelectTrigger>

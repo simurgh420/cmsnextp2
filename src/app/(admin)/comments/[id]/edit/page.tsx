@@ -17,12 +17,17 @@ export default async function EditCommentPage({
   if (!comment) return <div>کامنت یافت نشد</div>;
   async function handleUpdate(data: {
     content: string;
-    userId: string;
+    userId?: string | null;
     productId: string;
   }) {
+    'use server'; // 👈 این خط خیلی مهمه
     await prisma.comment.update({
       where: { id },
-      data,
+      data: {
+        content: data.content,
+        userId: data.userId ?? null, // 👈 اگر undefined بود، null ذخیره بشه
+        productId: data.productId,
+      },
     });
   }
   return (
@@ -32,7 +37,7 @@ export default async function EditCommentPage({
         products={products}
         initialData={{
           content: comment.content,
-          userId: comment.userId,
+          userId: comment.userId ?? undefined,
           productId: comment.productId || '',
         }}
         onSubmit={handleUpdate}

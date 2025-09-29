@@ -4,7 +4,7 @@ import { CommentStatus } from '@prisma/client';
 
 export const commentSchema = z.object({
   content: z.string().min(2, 'متن کامنت الزامی است'),
-  userId: z.string().optional(),
+  userId: z.string().nullable().optional(),
   productId: z.string().min(1, 'انتخاب محصول الزامی است'),
 });
 

@@ -29,7 +29,7 @@ export async function POST(req: Request) {
     const data = commentSchema.parse(body);
     const newComment = await createComment({
       content: data.content,
-      userId: data.userId ?? null,
+      userId: data.userId ?? null, // 👈 اگر undefined بود، null ذخیره میشه
       productId: data.productId,
     });
     return NextResponse.json(newComment, { status: 201 });
