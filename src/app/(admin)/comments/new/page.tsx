@@ -19,10 +19,8 @@ export default async function NewCommentPage() {
       content: data.content,
       userId: userId ?? null, // 👈 اگر undefined بود، null میشه
       productId: data.productId,
-      
     });
     revalidatePath('/comments');
-    console.log("userId from Clerk:", userId);
   }
 
   return (
