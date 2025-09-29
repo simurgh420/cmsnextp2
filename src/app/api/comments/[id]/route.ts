@@ -5,7 +5,12 @@ import {
   deleteComment,
 } from '@/application/services/comments';
 import { CommentStatus } from '@prisma/client';
-
+import {
+  updateCommentSchema,
+  commentActionSchema,
+} from '@/lib/validations/comment';
+import { ZodError } from 'zod';
+// PUT /comments/[id] → ویرایش متن یا وضعیت
 export async function PUT(
   req: Request,
   { params }: { params: Promise<{ id: string }> },
@@ -13,26 +18,35 @@ export async function PUT(
   try {
     const { id } = await params;
     const body = await req.json();
-    if (body.content) {
-      const updated = await updateComment(id, body.content);
+    const data = updateCommentSchema.parse(body);
+    if (data.content) {
+      const updated = await updateComment(id, data.content);
       return NextResponse.json(updated);
     }
-    if (body.status && Object.values(CommentStatus).includes(body.status)) {
-      const updated = await updateCommentStatus(id, body.status);
+    if (data.status) {
+      const updated = await updateComment(id, data.status);
       return NextResponse.json(updated);
     }
     return NextResponse.json({ error: 'ورودی معتبر نیست' }, { status: 400 });
   } catch (error) {
-    return NextResponse.json({ error: 'خطای سرور' }, { status: 500 });
+    if (error instanceof ZodError) {
+      return NextResponse.json(
+        { error: 'داده نامعتبر است', details: error.issues },
+        { status: 400 },
+      );
+    }
+    return NextResponse.json({ error: 'خطای داخلی سرور' }, { status: 500 });
   }
 }
+// PATCH /comments/[id] → اکشن‌های سریع (approve/reject/delete)
 export async function PATCH(
   req: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const { id } = await params;
-    const { action } = await req.json();
+    const body = await req.json();
+    const { action } = commentActionSchema.parse(body);
     if (action === 'approve') {
       await updateCommentStatus(id, CommentStatus.APPROVED);
       return NextResponse.json({ message: 'کامنت تایید شد' });
@@ -46,7 +60,13 @@ export async function PATCH(
     }
     return NextResponse.json({ success: true });
   } catch (error) {
-    return NextResponse.json({ error: 'خطای سرور' }, { status: 500 });
+    if (error instanceof ZodError) {
+      return NextResponse.json(
+        { error: 'اکشن نامعتبر است', details: error.issues },
+        { status: 400 },
+      );
+    }
+    return NextResponse.json({ error: 'خطای داخلی سرور' }, { status: 500 });
   }
 }
 export async function DELETE(

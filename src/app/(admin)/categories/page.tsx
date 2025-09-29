@@ -36,12 +36,7 @@ const CategoriesPage = async () => {
                 className="flex items-center justify-between px-6 py-4 hover:bg-gray-50"
               >
                 <span className="text-gray-800">{cate.name}</span>
-                <Link
-                  href={`/categories/${cate.id}/edit`}
-                  className="text-sm font-medium text-blue-600 hover:text-blue-800"
-                >
-                  ویرایش
-                </Link>
+
                 <Link
                   href={`/categories/${cate.id}/edit`}
                   className="text-sm font-medium text-blue-600 hover:text-blue-800"

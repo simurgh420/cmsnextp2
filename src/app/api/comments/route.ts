@@ -4,6 +4,8 @@ import {
   listAllComments,
   listCommentsByProduct,
 } from '@/application/services/comments';
+import { commentSchema } from '@/lib/validations/comment';
+import { ZodError } from 'zod';
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
@@ -20,20 +22,24 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: 'خطای سرور' }, { status: 500 });
   }
 }
-
+// POST /comments
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    if (!body.content || !body.userId || !body.productId) {
-      return NextResponse.json({ error: 'اطلاعات ناقص است' }, { status: 400 });
-    }
+    const data = commentSchema.parse(body);
     const newComment = await createComment({
-      content: body.content,
-      userId: body.userId,
-      productId: body.productId,
+      content: data.content,
+      userId: data.userId ?? null,
+      productId: data.productId,
     });
     return NextResponse.json(newComment, { status: 201 });
   } catch (error) {
-    return NextResponse.json({ error: 'خطا سرور' }, { status: 500 });
+    if (error instanceof ZodError) {
+      return NextResponse.json(
+        { error: 'داده نامعتبر است', details: error.issues },
+        { status: 400 },
+      );
+    }
+    return NextResponse.json({ error: 'خطای سرور' }, { status: 500 });
   }
 }

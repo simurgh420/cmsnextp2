@@ -9,11 +9,15 @@ export default async function NewCommentPage() {
 
   async function handleCreate(data: {
     content: string;
-    userId: string;
+    userId?: string | null;
     productId: string;
   }) {
     'use server';
-    await createComment(data);
+    await createComment({
+      content: data.content,
+      userId: data.userId ?? null, // 👈 اگر undefined بود، null میشه
+      productId: data.productId,
+    });
   }
 
   return (

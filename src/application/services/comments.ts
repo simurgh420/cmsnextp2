@@ -24,7 +24,7 @@ export async function createComment({
   productId,
 }: {
   content: string;
-  userId: string;
+  userId: string | null;
   productId: string;
 }) {
   return prisma.comment.create({

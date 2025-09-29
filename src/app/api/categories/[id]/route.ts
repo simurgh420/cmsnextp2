@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
-
+import { categorySchema } from '@/lib/validations/category';
 export async function PUT(
   req: Request,
   { params }: { params: Promise<{ id: string }> },
@@ -8,17 +8,20 @@ export async function PUT(
   const { id } = await params;
   try {
     const body = await req.json();
+    const data = categorySchema.parse(body);
     const category = await prisma.category.update({
       where: { id },
-      data: {
-        name: body.name,
-        slug: body.slug,
-      },
+      data,
     });
     return NextResponse.json(category);
   } catch (eroor) {
     console.error('PUT /categories/[id] error:', eroor);
-    return NextResponse.json({ eroor: 'خطای داخلی سرور' }, { status: 500 });
+    if (eroor instanceof Error && 'issues' in eroor) {
+      return NextResponse.json(
+        { error: 'داده نامعتبر است', detaile: eroor.issues },
+        { status: 400 },
+      );
+    }
   }
 }
 export async function DELETE(

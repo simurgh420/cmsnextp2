@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
-
+import { productSchema } from '@/lib/validations/product';
+import { ZodError } from 'zod';
 export async function GET(
   req: Request,
   { params }: { params: Promise<{ id: string }> },
@@ -9,6 +10,7 @@ export async function GET(
     const { id } = await params;
     const product = await prisma.product.findUnique({
       where: { id },
+      include: { category: true, comments: true },
     });
     if (!product) {
       return NextResponse.json({ error: 'محصول یافت نشد' }, { status: 404 });
@@ -27,19 +29,27 @@ export async function PUT(
 ) {
   try {
     const body = await req.json();
+    const data = productSchema.parse(body);
     const { id } = await params;
     const product = await prisma.product.update({
       where: { id },
       data: {
-        name: body.name,
-        price: body.price,
-        status: body.status,
-        image: body.image ?? null,
+        name: data.name,
+        price: data.price,
+        status: data.status,
+        image: data.image ?? null,
+        categoryId: data.categoryId,
       },
     });
     return NextResponse.json(product);
   } catch (error) {
     console.error('PUT /products/[id] error:', error);
+    if (error instanceof ZodError) {
+      return NextResponse.json(
+        { error: 'داده نامعتبر است', details: error.issues },
+        { status: 400 },
+      );
+    }
     return NextResponse.json({ error: 'خطای داخلی سرور' }, { status: 500 });
   }
 }

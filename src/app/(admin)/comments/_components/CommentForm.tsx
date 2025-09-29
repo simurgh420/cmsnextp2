@@ -1,6 +1,7 @@
 'use client';
-
-import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useAuth } from '@clerk/nextjs';
+import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import {
@@ -10,74 +11,114 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
+import { commentSchema, CommentSchema } from '@/lib/validations/comment';
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 type CommentFormProps = {
   products: { id: string; name: string }[];
   users?: { id: string; name: string }[];
-  initialData?: {
-    content: string;
-    userId: string;
-    productId: string;
-  };
-  onSubmit: (data: {
-    content: string;
-    userId: string;
-    productId: string;
-  }) => Promise<void>;
+  initialData?: Partial<CommentSchema>;
+  onSubmit: (data: CommentSchema) => Promise<void>;
 };
+
 export default function CommentForm({
   products,
   users = [],
   initialData,
   onSubmit,
 }: CommentFormProps) {
-  const [content, setContent] = useState(initialData?.content || '');
-  const [userId, setUserId] = useState(initialData?.userId || '');
-  const [productId, setProductId] = useState(initialData?.productId || '');
-  const [loading, setLoading] = useState(false);
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setLoading(true);
-    await onSubmit({ content, userId, productId });
-    setLoading(false);
-  }
+  const { userId } = useAuth();
+  const form = useForm<CommentSchema>({
+    resolver: zodResolver(commentSchema),
+    defaultValues: {
+      content: initialData?.content ?? '',
+      userId: userId ?? '',
+      productId: initialData?.productId ?? '',
+    },
+  });
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-lg">
-      <Textarea
-        placeholder="متن کامنت"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-      />
-      <Select value={productId} onValueChange={setProductId}>
-        <SelectTrigger>
-          <SelectValue placeholder="انتخاب محصول" />
-        </SelectTrigger>
-        <SelectContent>
-          {products.map((p) => (
-            <SelectItem key={p.id} value={p.id}>
-              {p.name}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-      {users.length > 0 && (
-        <Select value={userId} onValueChange={setUserId}>
-          <SelectTrigger>
-            <SelectValue placeholder="انتخاب کاربر" />
-          </SelectTrigger>
-          <SelectContent>
-            {users.map((u) => (
-              <SelectItem key={u.id} value={u.id}>
-                {u.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      )}
-      <Button type="submit" disabled={loading}>
-        {loading ? 'در حال ذخیره...' : 'ذخیره'}
-      </Button>
-    </form>
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-4 max-w-lg"
+      >
+        {/* متن کامنت */}
+        <FormField
+          control={form.control}
+          name="content"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>متن کامنت</FormLabel>
+              <FormControl>
+                <Textarea placeholder="نظر خود را وارد کنید..." {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* انتخاب محصول */}
+        <FormField
+          control={form.control}
+          name="productId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>نتخاب محصول </FormLabel>
+              <FormControl>
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="انتخاب محصول" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {products.map((p) => (
+                      <SelectItem key={p.id} value={p.id}>
+                        {p.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        {/* انتخاب کاربر (اختیاری) */}
+        {users.length > 0 && (
+          <FormField
+            control={form.control}
+            name="userId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>انتخاب کاربر</FormLabel>
+                <FormControl>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="انتخاب کاربر" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {users.map((u) => (
+                        <SelectItem key={u.id} value={u.id}>
+                          {u.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+        <Button type="submit" disabled={form.formState.isSubmitting}>
+          {form.formState.isSubmitting ? 'در حال ذخیره...' : 'ذخیره'}
+        </Button>
+      </form>
+    </Form>
   );
 }

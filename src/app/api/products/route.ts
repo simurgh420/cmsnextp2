@@ -1,10 +1,14 @@
 import { prisma } from '@/lib/prisma';
-
 import { NextResponse } from 'next/server';
+import { productSchema } from '@/lib/validations/product';
+import { ZodError } from 'zod';
 
 export async function GET() {
   try {
-    const products = await prisma.product.findMany();
+    const products = await prisma.product.findMany({
+      include: { category: true },
+      orderBy: { createdAt: 'desc' },
+    });
     return NextResponse.json(products);
   } catch (error) {
     console.error('GET /products error:', error);
@@ -14,23 +18,25 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    if (!body.name || !body.price || !body.status) {
-      return NextResponse.json(
-        { error: 'اطلاعات ارسالی ناقص است' },
-        { status: 400 },
-      );
-    }
+    const data = productSchema.parse(body);
     const product = await prisma.product.create({
       data: {
-        name: body.name,
-        price: body.price,
-        status: body.status,
-        image: body.image ?? null,
+        name: data.name,
+        price: data.price,
+        status: data.status,
+        image: data.image ?? null,
+        categoryId: data.categoryId,
       },
     });
     return NextResponse.json(product, { status: 201 });
   } catch (error) {
     console.error('POST /products error:', error);
+    if (error instanceof ZodError) {
+      return NextResponse.json(
+        { error: 'داده نامعتبر است', details: error.issues },
+        { status: 400 },
+      );
+    }
     return NextResponse.json({ error: 'خطای داخلی سرور' }, { status: 500 });
   }
 }

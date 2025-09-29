@@ -1,57 +1,62 @@
 'use client';
-import { useState } from 'react';
+
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import { categorySchema, CategorySchema } from '@/lib/validations/category';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Input } from '../ui/input';
 
 export default function NewCategoryForm() {
-  const [name, setName] = useState('');
-  const [slug, setSlug] = useState('');
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<CategorySchema>({
+    resolver: zodResolver(categorySchema),
+    defaultValues: {
+      name: '',
+      slug: '',
+    },
+  });
+  const onSubmit = async (data: CategorySchema) => {
     try {
       const res = await fetch('/api/categories', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, slug }),
+        body: JSON.stringify(data),
       });
       if (res.ok) {
         router.push('/categories');
         router.refresh();
       } else {
-        const errorData = await res.json().catch(() => {});
-        alert(errorData.error || 'خطا در ایجاد دسته‌بندی');
+        const errordata = await res.json().catch(() => {
+          alert(errordata.error || 'خطا در ایجاد دسته‌بندی');
+        });
       }
     } catch (error) {
       alert('ارتباط با سرور برقرار نشد');
-    } finally {
-      setLoading(false);
     }
   };
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 max-w-md">
       <div>
         <label className="block text-sm font-medium mb-1">نام دسته‌بندی</label>
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="مثلاً: پوشاک"
-          required
-        />
+        <Input {...register('name')} placeholder="مثلا موبایل" />
+        {errors.name && (
+          <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+        )}
       </div>
       <div>
-        <label className="block text-sm font-medium mb-1">اسلاگ</label>
-        <input
-          value={slug}
-          onChange={(e) => setSlug(e.target.value)}
-          placeholder="مثلاً: clothing"
-          required
-        />
+        <label className="block text-sm font-medium mb-1">اسلاگ </label>
+        <Input {...register('slug')} placeholder=" مثلا :Mobile" />
+        {errors.slug && (
+          <p className="text-red-500 text-sm mt-1">{errors.slug.message}</p>
+        )}
       </div>
-      <Button type="submit" disabled={loading}>
-        {loading ? 'در حال ثبت...' : 'ثبت دسته‌بندی'}
+      <Button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? 'در حال ثبت...' : 'ثبت دسته‌بندی'}
       </Button>
     </form>
   );

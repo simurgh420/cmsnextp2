@@ -3,7 +3,6 @@
 import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -25,27 +24,12 @@ import Link from 'next/link';
 import { Product } from '@prisma/client';
 import { Status } from '@prisma/client';
 import Image from 'next/image';
-export type ProductFormData = {
-  name: string;
-  price: number;
-  status: Status;
-  image?: string | null;
-  categoryId: string;
-};
-const schema = z.object({
-  name: z.string().min(2, 'نام محصول الزامی است'),
-  price: z.number().min(1000, 'قیمت باید بیشتر از 1000 باشد'),
-  status: z.nativeEnum(Status),
-  image: z.string().url('لینک عکس معتبر نیست').optional(),
-  categoryId: z.string().min(1, 'انتخاب دسته‌بندی الزامی است'),
-});
+import { productSchema, ProductSchema } from '@/lib/validations/product';
 type Category = { id: string; name: string };
-type FormData = z.infer<typeof schema>;
 type Props = {
   initialData?: Partial<Product>; // برای ویرایش
-  onSubmit: (data: ProductFormData) => void | Promise<void>;
+  onSubmit: (data: ProductSchema) => void | Promise<void>;
 };
-
 export const ProductForm: FC<Props> = ({ initialData, onSubmit }) => {
   const [categories, setCategories] = useState<Category[]>([]);
   useEffect(() => {
@@ -53,8 +37,8 @@ export const ProductForm: FC<Props> = ({ initialData, onSubmit }) => {
       .then((res) => res.json())
       .then((data) => setCategories(data));
   }, []);
-  const form = useForm<FormData>({
-    resolver: zodResolver(schema),
+  const form = useForm<ProductSchema>({
+    resolver: zodResolver(productSchema),
     defaultValues: {
       name: initialData?.name ?? '',
       price: initialData?.price ?? 0,
@@ -182,8 +166,12 @@ export const ProductForm: FC<Props> = ({ initialData, onSubmit }) => {
         />
 
         <div className="flex gap-4 pt-4">
-          <Button type="submit" className="flex-1">
-            ذخیره محصول
+          <Button
+            type="submit"
+            className="flex-1"
+            disabled={form.formState.isSubmitting}
+          >
+            {form.formState.isSubmitting ? 'در حال ذخیره...' : 'ذخیره محصول'}
           </Button>
           <Link href="/products">
             <Button type="button" variant="outline" className="flex-1">

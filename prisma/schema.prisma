@@ -54,7 +54,7 @@ model Comment {
   id        String        @id @default(cuid())
   content   String
   status    CommentStatus @default(PENDING)
-  userId    String        // Clerk userId
+  userId    String?        // Clerk userId
   productId String?
   product   Product?       @relation(fields: [productId],references: [id])
   createdAt DateTime      @default(now())

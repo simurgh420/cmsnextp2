@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-
+import { categorySchema, CategorySchema } from '@/lib/validations/category';
+import { Input } from '../ui/input';
 type Category = {
   id: string;
   name: string;
@@ -12,52 +13,56 @@ type Category = {
 };
 
 export default function EditCategoryForm({ category }: { category: Category }) {
-  const [name, setName] = useState(category.name);
-  const [slug, setSlug] = useState(category.slug);
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<CategorySchema>({
+    resolver: zodResolver(categorySchema),
+    defaultValues: {
+      name: category.name,
+      slug: category.slug,
+    },
+  });
+  const onSubmit = async (data: CategorySchema) => {
     try {
       const res = await fetch(`/api/categories/${category.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, slug }),
+        body: JSON.stringify(data),
       });
+
       if (res.ok) {
         router.push('/categories');
         router.refresh();
       } else {
         const errorData = await res.json().catch(() => {});
-        alert(errorData.error || 'خطا در ویرایش دسته‌بندی');
+        alert(errorData?.error || 'خطا در ویرایش دسته‌بندی');
       }
     } catch (error) {
       alert('ارتباط با سرور برقرار نشد');
-    } finally {
-      setLoading(false);
     }
   };
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div>
         <label className="block text-sm font-medium mb-1">نام دسته‌بندی</label>
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
+        <Input {...register('name')} />
+        {errors.name && (
+          <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+        )}
       </div>
       <div>
         <label className="block text-sm font-medium mb-1">اسلاگ</label>
-        <input
-          value={slug}
-          onChange={(e) => setSlug(e.target.value)}
-          required
-        />
+        <Input {...register('slug')} />
+        {errors.slug && (
+          <p className="text-red-500 text-sm mt-1">{errors.slug.message}</p>
+        )}
       </div>
-      <Button type="submit" disabled={loading}>
-        {loading ? 'در حال ذخیره...' : 'ذخیره تغییرات'}
+      <Button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? 'در حال ذخیره...' : 'ذخیره تغییرات'}
       </Button>
     </form>
   );
