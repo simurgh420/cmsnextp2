@@ -16,6 +16,8 @@ import { TableCell, TableRow } from '@/components/ui/table';
 import Image from 'next/image';
 import { Status } from '@prisma/client';
 import { useRouter } from 'next/navigation';
+import { Edit, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
 type Props = {
   product: Product;
 };
@@ -30,7 +32,7 @@ export const ProductRow: FC<Props> = ({ product }) => {
     if (res.ok) {
       router.refresh();
     } else {
-      alert('خطا در حذف محصول');
+      toast.error('خطا در حذف محصول');
     }
     setOpen(false);
   };
@@ -57,12 +59,25 @@ export const ProductRow: FC<Props> = ({ product }) => {
         )}
       </TableCell>
       <TableCell className="text-right flex gap-2">
-        {/* دکمه ویرایش → لینک به صفحه ویرایش */}
+        {/* دکمه جزئیات → لینک به صفحه جزئیات */}
         <Link
           href={`/products/${product.id}`}
-          className="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="inline-flex items-center"
         >
-          ویرایش
+          <Button variant="secondary" size="sm" className="text-xs h-8 px-3">
+            {' '}
+            جزئیات
+          </Button>
+        </Link>
+        {/* دکمه ویرایش */}
+        <Link
+          href={`/products/edit/${product.id}`}
+          className="inline-flex items-center"
+        >
+          <Button variant="outline" size="sm" className="text-xs h-8 px-3">
+            <Edit className="h-4 w-4 mr-2" />
+            ویرایش
+          </Button>
         </Link>
         {/* دکمه حذف با Dialog */}
         <Dialog open={open} onOpenChange={setOpen}>
@@ -72,6 +87,7 @@ export const ProductRow: FC<Props> = ({ product }) => {
               size="sm"
               className="text-xs px-2 py-1"
             >
+              <Trash2 className="h-4 w-4 mr-2" />
               حذف
             </Button>
           </DialogTrigger>

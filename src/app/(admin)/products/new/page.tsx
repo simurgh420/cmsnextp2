@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ProductForm } from '@/components/products/ProductForm';
 import { ProductFormData } from '@/lib/types';
+import { toast } from 'sonner';
 
 const NewProductPage: FC = () => {
   const router = useRouter();
@@ -24,11 +25,11 @@ const NewProductPage: FC = () => {
         router.refresh();
       } else {
         const errorData = await res.json().catch(() => ({}));
-        alert(errorData.error || 'خطا در ثبت محصول');
+        toast.error(errorData.error || 'خطا در ثبت محصول');
       }
     } catch (error) {
       console.error('Network or server error:', error);
-      alert('ارتباط با سرور برقرار نشد');
+      toast.error('ارتباط با سرور برقرار نشد');
     }
   };
 

@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { Button } from '../ui/button';
+import { toast } from 'sonner';
 
 export default function DeleteCategoryButton({ id }: { id: string }) {
   const router = useRouter();
@@ -17,11 +18,11 @@ export default function DeleteCategoryButton({ id }: { id: string }) {
         router.refresh(); // لیست دوباره رندر میشه
       } else {
         const data = await res.json();
-        alert(data.error || 'خطا در حذف دسته‌بندی');
+        toast.error(data.error || 'خطا در حذف دسته‌بندی');
       }
     } catch (error) {
       console.error('خطای شبکه یا سرور', error);
-      alert('خطای شبکه یا سرور');
+      toast.error('خطای شبکه یا سرور');
     }
   };
   return (

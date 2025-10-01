@@ -6,6 +6,7 @@ import { categorySchema, CategorySchema } from '@/lib/validations/category';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '../ui/input';
+import { toast } from 'sonner';
 
 export default function NewCategoryForm() {
   const router = useRouter();
@@ -32,11 +33,11 @@ export default function NewCategoryForm() {
         router.refresh();
       } else {
         const errordata = await res.json().catch(() => {
-          alert(errordata.error || 'خطا در ایجاد دسته‌بندی');
+          toast.error(errordata.error || 'خطا در ایجاد دسته‌بندی');
         });
       }
     } catch (error) {
-      alert('ارتباط با سرور برقرار نشد');
+      toast.error('ارتباط با سرور برقرار نشد');
     }
   };
   return (

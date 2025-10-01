@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { categorySchema, CategorySchema } from '@/lib/validations/category';
 import { Input } from '../ui/input';
+import { toast } from 'sonner';
 type Category = {
   id: string;
   name: string;
@@ -38,10 +39,10 @@ export default function EditCategoryForm({ category }: { category: Category }) {
         router.refresh();
       } else {
         const errorData = await res.json().catch(() => {});
-        alert(errorData?.error || 'خطا در ویرایش دسته‌بندی');
+        toast.error(errorData?.error || 'خطا در ویرایش دسته‌بندی');
       }
     } catch (error) {
-      alert('ارتباط با سرور برقرار نشد');
+      toast.error('ارتباط با سرور برقرار نشد');
     }
   };
 

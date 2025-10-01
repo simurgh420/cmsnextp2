@@ -44,6 +44,7 @@ export const ProductForm: FC<Props> = ({ initialData, onSubmit }) => {
       price: initialData?.price ?? 0,
       status: initialData?.status ?? 'ACTIVE',
       image: initialData?.image ?? undefined,
+      categoryId: initialData?.categoryId ?? '',
     },
   });
 
