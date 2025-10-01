@@ -1,13 +1,14 @@
-import { FC, Suspense } from 'react';
+import { Suspense } from 'react';
 import { ProductsTable } from '@/components/products/ProductsTable';
 import { Button } from '@/components/ui/button';
 import { FaPlus } from 'react-icons/fa';
 import Link from 'next/link';
-import { prisma } from '@/lib/prisma';
+
 import { Status } from '@prisma/client';
 import { ProductTableSkeleton } from '@/components/products/product-table-skeleton';
+import { getProducts } from './actions';
 const ProductsPage = async () => {
-  const products = await prisma.product.findMany();
+  const products = await getProducts();
 
   return (
     <div className="space-y-6">

@@ -1,7 +1,6 @@
 'use client';
 
-import { use, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useTransition } from 'react';
 import { Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -13,6 +12,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { toast } from 'sonner';
+import { deleteProduct } from '../actions';
 
 export default function DeleteProductButton({
   id,
@@ -22,23 +22,18 @@ export default function DeleteProductButton({
   name: string;
 }) {
   const [open, setOpen] = useState(false);
-  const router = useRouter();
-  const handleDelete = async () => {
-    try {
-      const res = await fetch(`/api/products/${id}`, {
-        method: 'DELETE',
-      });
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => {});
-        throw new Error(errorData.error || res.statusText);
+  const [isPending, startTransition] = useTransition();
+  const handleDelete = () => {
+    startTransition(async () => {
+      try {
+        await deleteProduct(id);
+        toast.success('محصول با موفقیت حذف شد');
+        setOpen(false);
+      } catch (error) {
+        console.error('Delete failed:', error);
+        toast.error('حذف محصول با خطا مواجه شد');
       }
-      setOpen(false);
-      router.push('/products');
-      router.refresh();
-    } catch (error) {
-      console.error('Delete failed:', error);
-      toast.error('حذف محصول با خطا مواجه شد');
-    }
+    });
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -60,8 +55,12 @@ export default function DeleteProductButton({
           <Button variant="outline" onClick={() => setOpen(false)}>
             انصراف
           </Button>
-          <Button variant="destructive" onClick={handleDelete}>
-            حذف محصول
+          <Button
+            variant="destructive"
+            onClick={handleDelete}
+            disabled={isPending}
+          >
+            {isPending ? 'در حال حذف...' : 'حذف محصول'}
           </Button>
         </DialogFooter>
       </DialogContent>

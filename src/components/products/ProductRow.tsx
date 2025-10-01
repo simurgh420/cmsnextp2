@@ -18,6 +18,7 @@ import { Status } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { Edit, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { deleteProduct } from '@/app/(admin)/products/actions';
 type Props = {
   product: Product;
 };
@@ -26,15 +27,15 @@ export const ProductRow: FC<Props> = ({ product }) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const handleDelete = async () => {
-    const res = await fetch(`/api/products/${product.id}`, {
-      method: 'DELETE',
-    });
-    if (res.ok) {
+    try {
+      await deleteProduct(product.id);
+      toast.success('محصول با موفقیت حذف شد');
       router.refresh();
-    } else {
+    } catch (error) {
       toast.error('خطا در حذف محصول');
+    } finally {
+      setOpen(false);
     }
-    setOpen(false);
   };
   return (
     <TableRow>

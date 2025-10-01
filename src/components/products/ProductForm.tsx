@@ -28,7 +28,7 @@ import { productSchema, ProductSchema } from '@/lib/validations/product';
 type Category = { id: string; name: string };
 type Props = {
   initialData?: Partial<Product>; // برای ویرایش
-  onSubmit: (data: ProductSchema) => void | Promise<void>;
+  onSubmit: (data: ProductSchema) => Promise<void> | Promise<Product>;
 };
 export const ProductForm: FC<Props> = ({ initialData, onSubmit }) => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -43,7 +43,7 @@ export const ProductForm: FC<Props> = ({ initialData, onSubmit }) => {
       name: initialData?.name ?? '',
       price: initialData?.price ?? 0,
       status: initialData?.status ?? 'ACTIVE',
-      image: initialData?.image ?? undefined,
+      image: initialData?.image ?? null,
       categoryId: initialData?.categoryId ?? '',
     },
   });
@@ -149,12 +149,13 @@ export const ProductForm: FC<Props> = ({ initialData, onSubmit }) => {
                   <Input
                     placeholder="https://example.com/image.jpg"
                     {...field}
+                    value={field.value ?? ''}
                   />
                   {field.value && field.value.startsWith('http') && (
                     <Image
                       width={300}
                       height={300}
-                      src={field.value}
+                      src={field.value || ''}
                       alt="پیش‌نمایش محصول"
                       className="w-32 h-32 object-cover rounded border"
                     />

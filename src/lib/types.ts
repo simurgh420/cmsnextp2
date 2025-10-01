@@ -6,6 +6,7 @@ export type ProductFormData = {
   name: string;
   price: number;
   status: Status;
+  categoryId: string;
   image?: string | null;
 };
 

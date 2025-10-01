@@ -4,35 +4,10 @@ import { FC } from 'react';
 import { Button } from '@/components/ui/button';
 import { FaArrowRight } from 'react-icons/fa';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { ProductForm } from '@/components/products/ProductForm';
-import { ProductFormData } from '@/lib/types';
-import { toast } from 'sonner';
+import { createProduct } from '../actions';
 
 const NewProductPage: FC = () => {
-  const router = useRouter();
-  const handleSubmit = async (data: ProductFormData) => {
-    try {
-      const res = await fetch('/api/products', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      if (res.ok) {
-        router.push('/products');
-        router.refresh();
-      } else {
-        const errorData = await res.json().catch(() => ({}));
-        toast.error(errorData.error || 'خطا در ثبت محصول');
-      }
-    } catch (error) {
-      console.error('Network or server error:', error);
-      toast.error('ارتباط با سرور برقرار نشد');
-    }
-  };
-
   return (
     <div className="space-y-6">
       {/* هدر صفحه */}
@@ -52,7 +27,7 @@ const NewProductPage: FC = () => {
       </div>
 
       {/* فرم افزودن محصول */}
-      <ProductForm onSubmit={handleSubmit} />
+      <ProductForm onSubmit={createProduct} />
     </div>
   );
 };

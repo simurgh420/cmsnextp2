@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
-import { prisma } from '@/lib/prisma';
 import EditProductClient from './EditProductClient';
+import { getProduct } from '../../actions';
 
 export default async function EditProductPage({
   params,
@@ -12,9 +12,7 @@ export default async function EditProductPage({
     return notFound();
   }
   const { id } = resolvedParams;
-  const product = await prisma.product.findUnique({
-    where: { id },
-  });
+  const product = await getProduct(id);
 
   if (!product) return notFound();
   return <EditProductClient product={product} />;

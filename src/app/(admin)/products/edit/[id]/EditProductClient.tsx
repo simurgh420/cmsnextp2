@@ -5,6 +5,7 @@ import { Product } from '@prisma/client';
 import { ProductFormData } from '@/lib/types';
 import { ProductForm } from '@/components/products/ProductForm';
 import { toast } from 'sonner';
+import { updateProduct } from '../../actions';
 
 interface Props {
   product: Product;
@@ -15,17 +16,7 @@ export default function EditProductClient({ product }: Props) {
 
   const handleSubmit = async (data: ProductFormData) => {
     try {
-      const res = await fetch(`/api/products/${product.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData.error || res.statusText);
-      }
-
+      await updateProduct(product.id, data);
       toast.success('محصول با موفقیت ویرایش شد');
       router.push('/products');
     } catch (error) {
