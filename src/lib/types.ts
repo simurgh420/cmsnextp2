@@ -19,4 +19,3 @@ export type UpdateCommentInput = {
   productId?: string | null;
   userId?: string | null;
 };
-

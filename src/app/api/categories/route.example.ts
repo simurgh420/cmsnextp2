@@ -1,3 +1,5 @@
+//روش api route
+
 import { prisma } from '@/lib/prisma';
 import { categorySchema } from '@/lib/validations/category';
 import { NextResponse } from 'next/server';

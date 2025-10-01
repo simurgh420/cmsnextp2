@@ -1,3 +1,5 @@
+//روش api route
+
 import { NextResponse } from 'next/server';
 import {
   createComment,
