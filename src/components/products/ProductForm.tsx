@@ -29,14 +29,13 @@ type Category = { id: string; name: string };
 type Props = {
   initialData?: Partial<Product>; // برای ویرایش
   onSubmit: (data: ProductSchema) => Promise<void> | Promise<Product>;
+  categories: Category[];
 };
-export const ProductForm: FC<Props> = ({ initialData, onSubmit }) => {
-  const [categories, setCategories] = useState<Category[]>([]);
-  useEffect(() => {
-    fetch('/api/categories')
-      .then((res) => res.json())
-      .then((data) => setCategories(data));
-  }, []);
+export const ProductForm: FC<Props> = ({
+  initialData,
+  onSubmit,
+  categories,
+}) => {
   const form = useForm<ProductSchema>({
     resolver: zodResolver(productSchema),
     defaultValues: {

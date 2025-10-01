@@ -1,11 +1,9 @@
 import DeleteCategoryButton from '@/components/categories/DeleteCategoryButton';
-import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
+import { getCategories } from './actions';
 
 const CategoriesPage = async () => {
-  const categories = await prisma.category.findMany({
-    orderBy: { createdAt: 'desc' },
-  });
+  const categories = await getCategories();
 
   return (
     <div className="mx-auto max-w-3xl space-y-8 p-6">

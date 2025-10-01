@@ -1,6 +1,7 @@
-import { prisma } from '@/lib/prisma';
+
 import EditCategoryForm from '@/components/categories/edit-category-form';
 import { notFound } from 'next/navigation';
+import { getCategory } from '../../actions';
 
 export default async function EditCategoryPage({
   params,
@@ -12,9 +13,7 @@ export default async function EditCategoryPage({
     return notFound();
   }
   const { id } = resolvedParams;
-  const category = await prisma.category.findUnique({
-    where: { id },
-  });
+  const category = await getCategory(id);
   if (!category) {
     return (
       <div className="space-y-4">

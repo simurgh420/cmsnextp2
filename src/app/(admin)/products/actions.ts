@@ -36,6 +36,7 @@ export async function createProduct(data: ProductSchema) {
       categoryId: validated.categoryId,
     },
   });
+  revalidatePath('/products');
   redirect('/products');
 }
 

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { categorySchema, CategorySchema } from '@/lib/validations/category';
 import { Input } from '../ui/input';
 import { toast } from 'sonner';
+import { updateCategory } from '@/app/(admin)/categories/actions';
 type Category = {
   id: string;
   name: string;
@@ -28,19 +29,8 @@ export default function EditCategoryForm({ category }: { category: Category }) {
   });
   const onSubmit = async (data: CategorySchema) => {
     try {
-      const res = await fetch(`/api/categories/${category.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-
-      if (res.ok) {
-        router.push('/categories');
-        router.refresh();
-      } else {
-        const errorData = await res.json().catch(() => {});
-        toast.error(errorData?.error || 'خطا در ویرایش دسته‌بندی');
-      }
+      await updateCategory(category.id, data);
+      toast.success('دسته‌بندی با موفقیت ویرایش شد');
     } catch (error) {
       toast.error('ارتباط با سرور برقرار نشد');
     }

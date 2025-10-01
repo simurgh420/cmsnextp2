@@ -1,15 +1,14 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { categorySchema, CategorySchema } from '@/lib/validations/category';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '../ui/input';
 import { toast } from 'sonner';
+import { createCategory } from '@/app/(admin)/categories/actions';
 
 export default function NewCategoryForm() {
-  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -23,19 +22,8 @@ export default function NewCategoryForm() {
   });
   const onSubmit = async (data: CategorySchema) => {
     try {
-      const res = await fetch('/api/categories', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-      if (res.ok) {
-        router.push('/categories');
-        router.refresh();
-      } else {
-        const errordata = await res.json().catch(() => {
-          toast.error(errordata.error || 'خطا در ایجاد دسته‌بندی');
-        });
-      }
+      await createCategory(data);
+      toast.success('دسته‌بندی با موفقیت ثبت شد');
     } catch (error) {
       toast.error('ارتباط با سرور برقرار نشد');
     }
