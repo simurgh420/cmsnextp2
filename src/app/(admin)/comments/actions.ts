@@ -1,11 +1,6 @@
 'use server';
 
-import {
-  commentSchema,
-  commentActionSchema,
-  CommentSchema,
-  CommentActionSchema,
-} from '@/lib/validations/comment';
+import { commentSchema, CommentSchema } from '@/lib/validations/comment';
 import { revalidatePath } from 'next/cache';
 import { CommentStatus } from '@prisma/client';
 import { auth } from '@clerk/nextjs/server';

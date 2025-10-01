@@ -19,9 +19,6 @@ export default async function EditCommentPage({
 
   if (!comment) return <div>کامنت یافت نشد</div>;
   const products = await getProductsForSelect();
-  if (!products) {
-    return <div>محصولات یافت نشد</div>;
-  }
   async function actionWithId(data: CommentSchema) {
     'use server';
     await updateCommentAction(data, id);

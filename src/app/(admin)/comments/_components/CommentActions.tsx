@@ -1,5 +1,14 @@
 'use client';
 
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useTransition } from 'react';
@@ -46,14 +55,31 @@ export default function CommentActions({ id }: { id: string }) {
       >
         رد
       </Button>
-      <Button
-        size="sm"
-        variant="destructive"
-        disabled={isPending}
-        onClick={() => handleAction('delete')}
-      >
-        حذف
-      </Button>
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button size="sm" variant="destructive" disabled={isPending}>
+            حذف
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>آیا مطمئنی؟</DialogTitle>
+            <DialogDescription>
+              این عملیات غیرقابل بازگشت است. کامنت برای همیشه حذف خواهد شد.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="secondary">انصراف</Button>
+            <Button
+              variant="destructive"
+              disabled={isPending}
+              onClick={() => handleAction('delete')}
+            >
+              تأیید حذف
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
