@@ -2,15 +2,27 @@
 
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { useTransition } from 'react';
+import { commentQuickAction } from '../actions';
+import { toast } from 'sonner';
 
 export default function CommentActions({ id }: { id: string }) {
-  async function handleAction(action: 'approve' | 'reject' | 'delete') {
-    await fetch(`/api/comments/${id}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action }),
+  const [isPending, startTransition] = useTransition();
+  function handleAction(action: 'approve' | 'reject' | 'delete') {
+    startTransition(async () => {
+      try {
+        await commentQuickAction(id, action);
+        toast.success(
+          action === 'approve'
+            ? 'کامنت تأیید شد'
+            : action === 'reject'
+              ? 'کامنت رد شد'
+              : 'کامنت حذف شد',
+        );
+      } catch (error) {
+        toast.error('خطا در انجام عملیات');
+      }
     });
-    window.location.reload();
   }
 
   return (
@@ -21,6 +33,7 @@ export default function CommentActions({ id }: { id: string }) {
       <Button
         size="sm"
         variant="default"
+        disabled={isPending}
         onClick={() => handleAction('approve')}
       >
         تأیید
@@ -28,6 +41,7 @@ export default function CommentActions({ id }: { id: string }) {
       <Button
         size="sm"
         variant="secondary"
+        disabled={isPending}
         onClick={() => handleAction('reject')}
       >
         رد
@@ -35,6 +49,7 @@ export default function CommentActions({ id }: { id: string }) {
       <Button
         size="sm"
         variant="destructive"
+        disabled={isPending}
         onClick={() => handleAction('delete')}
       >
         حذف

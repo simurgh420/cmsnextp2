@@ -19,17 +19,18 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { toast } from 'sonner';
 type CommentFormProps = {
   products: { id: string; name: string }[];
   users?: { id: string; name: string }[];
   initialData?: Partial<CommentSchema>;
-  onSubmit: (data: CommentSchema) => Promise<void>;
+  action: (data: CommentSchema) => Promise<void>;
 };
 
 export default function CommentForm({
   products,
   initialData,
-  onSubmit,
+  action,
 }: CommentFormProps) {
   const form = useForm<Omit<CommentSchema, 'userId'>>({
     resolver: zodResolver(commentSchema),
@@ -38,6 +39,15 @@ export default function CommentForm({
       productId: initialData?.productId ?? '',
     },
   });
+  const onSubmit = async (data: CommentSchema) => {
+    try {
+      await action(data); // 👈 مستقیم اکشن رو صدا می‌زنی
+      toast.success('کامنت با موفقیت ثبت شد ✅');
+    } catch (error) {
+      console.error(error);
+      toast.error('خطا در ثبت کامنت ❌');
+    }
+  };
   return (
     <Form {...form}>
       <form

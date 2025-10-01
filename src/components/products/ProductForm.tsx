@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
@@ -25,7 +25,8 @@ import { Product } from '@prisma/client';
 import { Status } from '@prisma/client';
 import Image from 'next/image';
 import { productSchema, ProductSchema } from '@/lib/validations/product';
-type Category = { id: string; name: string };
+import { Category } from '@prisma/client';
+
 type Props = {
   initialData?: Partial<Product>; // برای ویرایش
   onSubmit: (data: ProductSchema) => Promise<void> | Promise<Product>;

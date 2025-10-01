@@ -27,7 +27,7 @@ const NewProductPage: FC = async () => {
       </div>
 
       {/* فرم افزودن محصول */}
-      <ProductForm onSubmit={createProduct} categories={categories } />
+      <ProductForm onSubmit={createProduct} categories={categories} />
     </div>
   );
 };

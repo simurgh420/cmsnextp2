@@ -1,6 +1,9 @@
-import { prisma } from '@/lib/prisma';
 import CommentForm from '../../_components/CommentForm';
 import { notFound } from 'next/navigation';
+import { updateCommentAction } from '../../actions';
+import { getProductsForSelect } from '@/app/(admin)/products/actions';
+import { getCommentById } from '@/application/services/comments';
+import { CommentSchema } from '@/lib/validations/comment';
 
 export default async function EditCommentPage({
   params,
@@ -12,28 +15,16 @@ export default async function EditCommentPage({
     return notFound();
   }
   const { id } = resolvedParams;
-  const comment = await prisma.comment.findUnique({
-    where: { id },
-    include: { product: true },
-  });
-  const products = await prisma.product.findMany({
-    select: { id: true, name: true },
-  });
+  const comment = await getCommentById(id);
+
   if (!comment) return <div>کامنت یافت نشد</div>;
-  async function handleUpdate(data: {
-    content: string;
-    userId?: string | null;
-    productId: string;
-  }) {
-    'use server'; // 👈 این خط خیلی مهمه
-    await prisma.comment.update({
-      where: { id },
-      data: {
-        content: data.content,
-        userId: data.userId ?? null, // 👈 اگر undefined بود، null ذخیره بشه
-        productId: data.productId,
-      },
-    });
+  const products = await getProductsForSelect();
+  if (!products) {
+    return <div>محصولات یافت نشد</div>;
+  }
+  async function actionWithId(data: CommentSchema) {
+    'use server';
+    await updateCommentAction(data, id);
   }
   return (
     <div className="p-6">
@@ -45,7 +36,7 @@ export default async function EditCommentPage({
           userId: comment.userId ?? undefined,
           productId: comment.productId || '',
         }}
-        onSubmit={handleUpdate}
+        action={actionWithId}
       />
     </div>
   );

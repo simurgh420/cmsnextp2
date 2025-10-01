@@ -13,3 +13,10 @@ export type ProductFormData = {
 export type CommentWithProduct = Comment & {
   product: Product;
 };
+export type UpdateCommentInput = {
+  id: string;
+  content?: string;
+  productId?: string | null;
+  userId?: string | null;
+};
+

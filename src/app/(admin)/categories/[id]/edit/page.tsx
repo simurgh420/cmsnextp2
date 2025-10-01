@@ -1,4 +1,3 @@
-
 import EditCategoryForm from '@/components/categories/edit-category-form';
 import { notFound } from 'next/navigation';
 import { getCategory } from '../../actions';

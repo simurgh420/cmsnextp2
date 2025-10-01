@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Product } from '@prisma/client';
+import { Product, Category } from '@prisma/client';
 import { ProductFormData } from '@/lib/types';
 import { ProductForm } from '@/components/products/ProductForm';
 import { toast } from 'sonner';
@@ -9,14 +9,16 @@ import { updateProduct } from '../../actions';
 
 interface Props {
   product: Product;
+  categories: Category[];
 }
 
-export default function EditProductClient({ product }: Props) {
+export default function EditProductClient({ product, categories }: Props) {
   const router = useRouter();
 
   const handleSubmit = async (data: ProductFormData) => {
     try {
       await updateProduct(product.id, data);
+
       toast.success('محصول با موفقیت ویرایش شد');
       router.push('/products');
     } catch (error) {
@@ -34,7 +36,11 @@ export default function EditProductClient({ product }: Props) {
         </p>
       </div>
 
-      <ProductForm initialData={product} onSubmit={handleSubmit} />
+      <ProductForm
+        initialData={product}
+        categories={categories}
+        onSubmit={handleSubmit}
+      />
     </div>
   );
 }

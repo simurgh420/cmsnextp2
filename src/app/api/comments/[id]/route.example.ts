@@ -20,11 +20,11 @@ export async function PUT(
     const body = await req.json();
     const data = updateCommentSchema.parse(body);
     if (data.content) {
-      const updated = await updateComment(id, data.content);
+      const updated = await updateComment({ id, content: data.content });
       return NextResponse.json(updated);
     }
     if (data.status) {
-      const updated = await updateComment(id, data.status);
+      const updated = await updateCommentStatus(id, data.status);
       return NextResponse.json(updated);
     }
     return NextResponse.json({ error: 'ورودی معتبر نیست' }, { status: 400 });

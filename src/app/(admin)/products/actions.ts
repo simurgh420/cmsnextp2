@@ -55,6 +55,13 @@ export async function updateProduct(id: string, data: ProductSchema) {
     },
   });
 }
+//📌 گرفتن اسم و ایدی محصول فقط
+export async function getProductsForSelect() {
+  return prisma.product.findMany({
+    select: { id: true, name: true },
+    orderBy: { name: 'asc' },
+  });
+}
 // 📌 حذف محصول
 
 export async function deleteProduct(id: string) {
