@@ -19,7 +19,11 @@ interface Props {
 }
 
 export default async function ProductDetailPage({ params }: Props) {
-  const { id } = await params;
+  const resolvedParams = await params;
+  if (!resolvedParams.id) {
+    return notFound();
+  }
+  const { id } = resolvedParams;
   const product = await prisma.product.findUnique({
     where: { id },
     include: {

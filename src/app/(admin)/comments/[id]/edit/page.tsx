@@ -1,12 +1,17 @@
 import { prisma } from '@/lib/prisma';
 import CommentForm from '../../_components/CommentForm';
+import { notFound } from 'next/navigation';
 
 export default async function EditCommentPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = await params;
+  const resolvedParams = await params;
+  if (!resolvedParams.id) {
+    return notFound();
+  }
+  const { id } = resolvedParams;
   const comment = await prisma.comment.findUnique({
     where: { id },
     include: { product: true },

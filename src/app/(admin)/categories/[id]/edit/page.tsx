@@ -1,12 +1,17 @@
 import { prisma } from '@/lib/prisma';
 import EditCategoryForm from '@/components/categories/edit-category-form';
+import { notFound } from 'next/navigation';
 
 export default async function EditCategoryPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = await params;
+  const resolvedParams = await params;
+  if (!resolvedParams.id) {
+    return notFound();
+  }
+  const { id } = resolvedParams;
   const category = await prisma.category.findUnique({
     where: { id },
   });
@@ -14,7 +19,7 @@ export default async function EditCategoryPage({
     return (
       <div className="space-y-4">
         <h1 className="text-xl font-bold">دسته‌بندی یافت نشد</h1>
-        <p>محصولی با شاناسه {params.id} یافت نشد </p>
+        <p>محصولی با شاناسه {id} یافت نشد </p>
       </div>
     );
   }
