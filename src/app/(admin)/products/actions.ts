@@ -17,7 +17,7 @@ export async function getProducts() {
 //📌 گرفتن اسم و ایدی محصول فقط
 export async function getProductsForSelect() {
   return prisma.product.findMany({
-    select: { id: true, name: true , price:true},
+    select: { id: true, name: true, price: true },
     orderBy: { name: 'asc' },
   });
 }

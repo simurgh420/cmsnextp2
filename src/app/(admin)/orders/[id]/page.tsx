@@ -16,9 +16,6 @@ const OrderDetailPage = async ({
         <strong>شناسه:</strong> {order.id}
       </p>
       <p>
-        <strong>کاربر:</strong> {order.userId}
-      </p>
-      <p>
         <strong>محصول:</strong> {order.product.name}
       </p>
       <p>

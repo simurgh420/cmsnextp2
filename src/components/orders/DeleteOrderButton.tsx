@@ -11,7 +11,7 @@ type DeleteOrderButtonProps = {
   id: string;
 };
 
-export  function DeleteOrderButton({ id }: DeleteOrderButtonProps) {
+export function DeleteOrderButton({ id }: DeleteOrderButtonProps) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const handleDelete = () => {
@@ -44,4 +44,3 @@ export  function DeleteOrderButton({ id }: DeleteOrderButtonProps) {
   );
 }
 export default DeleteOrderButton;
-

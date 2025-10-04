@@ -1,6 +1,5 @@
 // types.ts
-import { Status } from '@prisma/client';
-import { Comment, Product } from '@prisma/client';
+import { Prisma, Status, Order, Product, Comment } from '@prisma/client';
 
 export type ProductFormData = {
   name: string;
@@ -19,3 +18,15 @@ export type UpdateCommentInput = {
   productId?: string | null;
   userId?: string | null;
 };
+export type OrderWithProduct = Prisma.OrderGetPayload<{
+  include: { product: true };
+}>;
+export type CommentWithExtras = Comment & {
+  product?: Product | null;
+  userName?: string; // 👈 اضافه شد
+};
+export type Role = 'admin' | 'user';
+export type OrderWithExtras = OrderWithProduct & {
+  userName: string;
+};
+
