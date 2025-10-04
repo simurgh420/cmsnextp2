@@ -12,10 +12,21 @@ datasource db {
   provider = "postgresql"  
   url      = env("DATABASE_URL")
 }
+enum OrderStatus {
+  PENDING
+  PAID
+  SHIPPED
+  CANCELLED
+}
 
 enum Status {
   ACTIVE
   INACTIVE
+}
+enum CommentStatus {
+  PENDING   // در انتظار تأیید
+  APPROVED  // تأیید شده
+  REJECTED  // رد شده
 }
 
 model Product {
@@ -33,6 +44,7 @@ model Product {
   @@map("products")
   @@index([categoryId])
   comments Comment[]
+  orders Order[]
 }
 model Category{
   id String @id @default(cuid())
@@ -44,11 +56,6 @@ model Category{
  @@map("categories")
 
 }
-enum CommentStatus {
-  PENDING   // در انتظار تأیید
-  APPROVED  // تأیید شده
-  REJECTED  // رد شده
-}
 
 model Comment {
   id        String        @id @default(cuid())
@@ -59,4 +66,18 @@ model Comment {
   product   Product?       @relation(fields: [productId],references: [id])
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
+}
+model Order {
+  id        String   @id @default(cuid())
+  userId    String   // از Clerk
+  productId String
+  quantity  Int
+  status    OrderStatus   @default(PENDING)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+
+  product   Product @relation(fields: [productId], references: [id])
+
+  
 }
