@@ -1,22 +1,35 @@
-'use client';
+import { notFound } from 'next/navigation';
+import { getOrderById } from '../actions';
 
-import { FC } from 'react';
-import { useParams } from 'next/navigation';
-
-const OrderDetailPage: FC = () => {
-  const params = useParams();
-  const orderId = params.id as string;
-
+const OrderDetailPage = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) => {
+  const { id } = await params;
+  const order = await getOrderById(id);
+  if (!order) return notFound();
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">جزئیات سفارش</h1>
-        <p className="text-gray-600 mt-1">شناسه سفارش: {orderId}</p>
-      </div>
-
-      <div className="bg-white rounded-lg shadow-sm border p-6">
-        <p className="text-gray-500">صفحه جزئیات سفارش در حال توسعه است...</p>
-      </div>
+    <div className="space-y-4">
+      <h1 className="text-xl font-bold">جزئیات سفارش</h1>
+      <p>
+        <strong>شناسه:</strong> {order.id}
+      </p>
+      <p>
+        <strong>کاربر:</strong> {order.userId}
+      </p>
+      <p>
+        <strong>محصول:</strong> {order.product.name}
+      </p>
+      <p>
+        <strong>تعداد:</strong> {order.quantity}
+      </p>
+      <p>
+        <strong>وضعیت:</strong> {order.status}
+      </p>
+      <p>
+        <strong>تاریخ:</strong> {order.createdAt.toLocaleString()}
+      </p>
     </div>
   );
 };

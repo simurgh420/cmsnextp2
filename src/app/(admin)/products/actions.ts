@@ -6,13 +6,19 @@ import { prisma } from '@/lib/prisma';
 import { productSchema, ProductSchema } from '@/lib/validations/product';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-
 export async function getProducts() {
   return await prisma.product.findMany({
     include: { category: true },
     orderBy: {
       createdAt: 'desc',
     },
+  });
+}
+//📌 گرفتن اسم و ایدی محصول فقط
+export async function getProductsForSelect() {
+  return prisma.product.findMany({
+    select: { id: true, name: true , price:true},
+    orderBy: { name: 'asc' },
   });
 }
 // 📌 گرفتن یک محصول خاص
@@ -55,13 +61,7 @@ export async function updateProduct(id: string, data: ProductSchema) {
     },
   });
 }
-//📌 گرفتن اسم و ایدی محصول فقط
-export async function getProductsForSelect() {
-  return prisma.product.findMany({
-    select: { id: true, name: true },
-    orderBy: { name: 'asc' },
-  });
-}
+
 // 📌 حذف محصول
 
 export async function deleteProduct(id: string) {
