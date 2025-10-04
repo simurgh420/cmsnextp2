@@ -19,10 +19,12 @@ const NewProductPage: FC = async () => {
           </Button>
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-foreground">
             افزودن محصول جدید
           </h1>
-          <p className="text-gray-600 mt-1">اطلاعات محصول جدید را وارد کنید</p>
+          <p className="text-muted-foreground mt-1">
+            اطلاعات محصول جدید را وارد کنید
+          </p>
         </div>
       </div>
 

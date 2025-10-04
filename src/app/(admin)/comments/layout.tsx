@@ -4,7 +4,7 @@ import { Header } from '@/components/layout/Header/Header';
 
 export default function CommentsLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-background transition-colors duration-300">
       {/* سایدبار */}
       <Sidebar />
       <div className="flex-1 flex flex-col">

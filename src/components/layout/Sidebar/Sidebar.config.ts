@@ -3,7 +3,6 @@ import {
   MdDashboard,
   MdCategory,
   MdShoppingCart,
-  MdPeople,
   MdBarChart,
   MdSettings,
   MdComment,
@@ -15,7 +14,14 @@ export const sidebarItems: SidebarItemType[] = [
   { label: 'دسته‌بندی‌ها', href: '/categories', icon: MdCategory },
   { label: 'کامنت‌ها', href: '/comments', icon: MdComment },
   { label: 'سفارش‌ها', href: '/orders', icon: MdShoppingCart },
-  { label: 'مشتریان', href: '/customers', icon: MdPeople },
-  { label: 'گزارش‌ها', href: '/reports', icon: MdBarChart },
+  {
+    label: 'گزارش‌ها',
+    icon: MdBarChart,
+    children: [
+      { label: 'سفارش‌ها', href: '/reports/orders', icon: MdShoppingCart },
+      { label: 'محصولات', href: '/reports/products', icon: FaBox },
+      { label: 'دسته‌بندی‌ها', href: '/reports/categories', icon: MdCategory },
+    ],
+  },
   { label: 'تنظیمات', href: '/settings', icon: MdSettings },
 ];

@@ -1,10 +1,17 @@
-export default function DashboardPage() {
+import { Suspense } from 'react';
+import { getDashboardData } from './actions';
+import Dashboard from '@/components/dashboard/Dashboard';
+import DashboardSkeleton from '@/components/dashboard/dashboard-skeleton';
+
+export default async function DashboardPage() {
+  const data = await getDashboardData();
+
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">خوش آمدید به پنل مدیریت</h1>
-      <p className="text-gray-700">
-        اینجا می‌توانید محصولات، سفارش‌ها و گزارش‌ها را مدیریت کنید.
-      </p>
+    <div className="space-y-6">
+      <h1 className="text-xl font-bold text-foreground">داشبورد</h1>
+      <Suspense fallback={<DashboardSkeleton />}>
+        <Dashboard data={data} />
+      </Suspense>
     </div>
   );
 }

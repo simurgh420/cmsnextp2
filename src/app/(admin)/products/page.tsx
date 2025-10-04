@@ -15,8 +15,10 @@ const ProductsPage = async () => {
       {/* هدر صفحه */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">مدیریت محصولات</h1>
-          <p className="text-gray-600 mt-1">لیست تمام محصولات موجود در سیستم</p>
+          <h1 className="text-2xl font-bold text-foreground">مدیریت محصولات</h1>
+          <p className="text-muted-foreground mt-1">
+            لیست تمام محصولات موجود در سیستم
+          </p>
         </div>
         <Link href="/products/new">
           <Button className="flex items-center gap-2">
@@ -28,30 +30,32 @@ const ProductsPage = async () => {
 
       {/* آمار کلی */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white p-4 rounded-lg shadow-sm border">
-          <div className="text-sm text-gray-600">کل محصولات</div>
-          <div className="text-2xl font-bold text-gray-900">
+        <div className="bg-card p-4 rounded-lg shadow-sm border">
+          <div className="text-sm text-muted-foreground">کل محصولات</div>
+          <div className="text-2xl font-bold text-foreground">
             {products.length}
           </div>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow-sm border">
-          <div className="text-sm text-gray-600">محصولات فعال</div>
-          <div className="text-2xl font-bold text-green-600">
+        <div className="bg-card p-4 rounded-lg shadow-sm border">
+          <div className="text-sm text-muted-foreground">محصولات فعال</div>
+          <div className="text-2xl font-bold text-green-600 dark:text-green-400">
             {products.filter((p) => p.status === Status.ACTIVE).length}
           </div>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow-sm border">
-          <div className="text-sm text-gray-600">محصولات غیرفعال</div>
-          <div className="text-2xl font-bold text-red-600">
+        <div className="bg-card p-4 rounded-lg shadow-sm border">
+          <div className="text-sm text-muted-foreground">محصولات غیرفعال</div>
+          <div className="text-2xl font-bold text-red-600 dark:text-red-400">
             {products.filter((p) => p.status === Status.INACTIVE).length}
           </div>
         </div>
       </div>
 
       {/* جدول محصولات */}
-      <div className="bg-white rounded-lg shadow-sm border overflow-hidden">
+      <div className="bg-card rounded-lg shadow-sm border overflow-hidden">
         <div className="p-4 border-b">
-          <h2 className="text-lg font-semibold text-gray-900">لیست محصولات</h2>
+          <h2 className="text-lg font-semibold text-foreground">
+            لیست محصولات
+          </h2>
         </div>
         <div className="overflow-x-auto">
           <Suspense fallback={<ProductTableSkeleton rows={8} />}>

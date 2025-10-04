@@ -54,9 +54,9 @@ export const ProductRow: FC<Props> = ({ product }) => {
       </TableCell>
       <TableCell className="text-right">
         {product.status === Status.ACTIVE ? (
-          <span className="text-green-600">فعال</span>
+          <span className="text-green-600 dark:text-green-400">فعال</span>
         ) : (
-          <span className="text-red-600">غیرفعال</span>
+          <span className="text-red-600 dark:text-red-400">غیرفعال</span>
         )}
       </TableCell>
       <TableCell className="text-right flex gap-2">
@@ -96,7 +96,7 @@ export const ProductRow: FC<Props> = ({ product }) => {
             <DialogHeader>
               <DialogTitle>آیا مطمئن هستید؟</DialogTitle>
             </DialogHeader>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-muted-foreground">
               این عملیات غیرقابل بازگشت است. محصول «{product.name}» حذف خواهد
               شد.
             </p>

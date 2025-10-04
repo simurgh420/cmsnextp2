@@ -33,8 +33,8 @@ export default async function ProductDetailPage({ params }: Props) {
   if (!product) return notFound();
   const statusColor =
     product.status === 'ACTIVE'
-      ? 'bg-green-100 text-green-800'
-      : 'bg-gray-100 text-gray-800';
+      ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+      : 'bg-muted text-muted-foreground';
   return (
     <div>
       <div className="space-y-6">
@@ -42,11 +42,11 @@ export default async function ProductDetailPage({ params }: Props) {
           <div className="flex items-center space-x-2 space-x-reverse">
             <Link
               href="/admin/products"
-              className="text-gray-500 hover:text-gray-900"
+              className="text-muted-foreground hover:text-foreground"
             >
               <ArrowLeft className="h-4 w-4" />
             </Link>
-            <h1 className="text-2xl font-bold text-gray-900">جزئیات محصول</h1>
+            <h1 className="text-2xl font-bold text-foreground">جزئیات محصول</h1>
           </div>
           <div className="flex space-x-2 space-x-reverse">
             <Link href={`/products/edit/${id}`}>
@@ -78,17 +78,17 @@ export default async function ProductDetailPage({ params }: Props) {
             )}
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <p className="text-gray-600">قیمت:</p>
+                <p className="text-muted-foreground">قیمت:</p>
                 <p className="font-semibold">
                   {product.price.toLocaleString('fa-IR')} تومان
                 </p>
               </div>
               <div>
-                <p className="text-gray-600">دسته‌بندی:</p>
+                <p className="text-muted-foreground">دسته‌بندی:</p>
                 <p className="font-semibold">{product.category?.name || '—'}</p>
               </div>
               <div>
-                <p className="text-gray-600">وضعیت:</p>
+                <p className="text-muted-foreground">وضعیت:</p>
                 <Badge className={statusColor}>{product.status}</Badge>
               </div>
             </div>

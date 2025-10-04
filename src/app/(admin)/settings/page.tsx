@@ -1,20 +1,11 @@
-'use client';
+// app/(admin)/settings/page.tsx
+import SettingsPage from '@/components/settings/SettingsPage';
 
-import { FC } from 'react';
-
-const SettingsPage: FC = () => {
+export default function Settings() {
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">تنظیمات</h1>
-        <p className="text-gray-600 mt-1">تنظیمات سیستم و پیکربندی</p>
-      </div>
-
-      <div className="bg-white rounded-lg shadow-sm border p-6">
-        <p className="text-gray-500">صفحه تنظیمات در حال توسعه است...</p>
-      </div>
+      <h1 className="text-xl font-bold text-center text-foreground">تنظیمات</h1>
+      <SettingsPage />
     </div>
   );
-};
-
-export default SettingsPage;
+}

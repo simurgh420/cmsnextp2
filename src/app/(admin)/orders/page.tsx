@@ -3,6 +3,8 @@ import { getOrders } from './actions';
 import Link from 'next/link';
 import { FaPlus } from 'react-icons/fa';
 import { Button } from '@/components/ui/button';
+import { Suspense } from 'react';
+import { OrderTableSkeleton } from '@/components/orders/order-table-skeleton';
 
 const OrdersPage = async () => {
   const orders = await getOrders();
@@ -15,7 +17,9 @@ const OrdersPage = async () => {
         </Button>
       </Link>
       <h1 className="text-xl font-bold">مدیریت سفارش‌ها</h1>
+      <Suspense fallback={<OrderTableSkeleton rows={0} />}>
       <OrderTable orders={orders} />
+      </Suspense>
     </div>
   );
 };

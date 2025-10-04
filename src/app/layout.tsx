@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { ClerkProvider } from '@clerk/nextjs';
 import { Toaster } from '@/components/ui/sonner';
-
+import { Providers } from './providers';
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -26,12 +26,15 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="fa" dir="rtl">
+      <html lang="fa" dir="rtl" suppressHydrationWarning>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground transition-colors duration-300`}
         >
-          {children}
-          <Toaster position="top-right" richColors />
+          <Providers>
+            {children}
+
+            <Toaster position="top-right" richColors />
+          </Providers>
         </body>
       </html>
     </ClerkProvider>

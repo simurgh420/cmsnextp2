@@ -48,7 +48,7 @@ export default function DeleteProductButton({
         <DialogHeader>
           <DialogTitle>آیا مطمئن هستید؟</DialogTitle>
         </DialogHeader>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-muted-foreground">
           این عملیات غیرقابل بازگشت است. محصول «{name}» حذف خواهد شد.
         </p>
         <DialogFooter>

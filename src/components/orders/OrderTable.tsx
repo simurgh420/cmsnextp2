@@ -30,7 +30,7 @@ export default function OrderTable({ orders }: OrderTableProps) {
       <TableBody>
         {orders.map((order) => (
           <TableRow key={order.id}>
-            <TableCell className="font-mono text-xs text-gray-500">
+            <TableCell className="font-mono text-xs text-muted-foreground">
               {order.id}
             </TableCell>
             <TableCell>{order.userName}</TableCell>
@@ -40,10 +40,10 @@ export default function OrderTable({ orders }: OrderTableProps) {
               <span
                 className={`px-2 py-1 rounded text-xs font-medium ${
                   order.status === 'PENDING'
-                    ? 'bg-yellow-100 text-yellow-800'
+                    ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
                     : order.status === 'PAID'
-                      ? 'bg-green-100 text-green-800'
-                      : 'bg-red-100 text-red-800'
+                      ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+                      : 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
                 }`}
               >
                 {order.status}

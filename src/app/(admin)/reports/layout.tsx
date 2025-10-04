@@ -2,9 +2,9 @@ import type { ReactNode } from 'react';
 import { Sidebar } from '@/components/layout/Sidebar/Sidebar';
 import { Header } from '@/components/layout/Header/Header';
 
-export default function CustomersLayout({ children }: { children: ReactNode }) {
+export default function ReportsLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-background transition-colors duration-300">
       {/* سایدبار */}
       <Sidebar />
       <div className="flex-1 flex flex-col">

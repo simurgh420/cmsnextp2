@@ -39,17 +39,21 @@ export default function EditCategoryForm({ category }: { category: Category }) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div>
-        <label className="block text-sm font-medium mb-1">نام دسته‌بندی</label>
+        <label className="block text-sm font-medium mb-1 text-foreground">
+          نام دسته‌بندی
+        </label>
         <Input {...register('name')} />
         {errors.name && (
-          <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+          <p className="text-destructive text-sm mt-1">{errors.name.message}</p>
         )}
       </div>
       <div>
-        <label className="block text-sm font-medium mb-1">اسلاگ</label>
+        <label className="block text-sm font-medium mb-1 text-foreground">
+          اسلاگ
+        </label>
         <Input {...register('slug')} />
         {errors.slug && (
-          <p className="text-red-500 text-sm mt-1">{errors.slug.message}</p>
+          <p className="text-destructive text-sm mt-1">{errors.slug.message}</p>
         )}
       </div>
       <Button type="submit" disabled={isSubmitting}>

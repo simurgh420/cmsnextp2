@@ -2,6 +2,8 @@ import CommentsTable from './_components/CommentsTable';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { getAllCommentsAction } from './actions';
+import { Suspense } from 'react';
+import { CommentsTableSkeleton } from './_components/comment-table-skeleton';
 
 export default async function CommentsPage() {
   const comments = await getAllCommentsAction();
@@ -11,7 +13,10 @@ export default async function CommentsPage() {
       <Link href="/comments/new">
         <Button>ایجاد کامنت جدید</Button>
       </Link>
-      <CommentsTable comments={comments} />
+
+      <Suspense fallback={<CommentsTableSkeleton rows={8} />}>
+        <CommentsTable comments={comments} />
+      </Suspense>
     </div>
   );
 }

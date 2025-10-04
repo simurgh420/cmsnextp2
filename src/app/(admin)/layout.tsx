@@ -5,5 +5,9 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div className="bg-gray-50 antialiased min-h-screen">{children}</div>;
+  return (
+    <div className="bg-background antialiased min-h-screen transition-colors duration-300">
+      {children}
+    </div>
+  );
 }

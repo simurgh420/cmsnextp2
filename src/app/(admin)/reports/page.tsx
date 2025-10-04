@@ -1,20 +1,14 @@
-'use client';
+// app/(admin)/reports/page.tsx
+import { getReportsData } from './actions';
+import ReportsDashboard from '@/components/reports/ReportsDashboard';
 
-import { FC } from 'react';
+export default async function ReportsPage() {
+  const data = await getReportsData();
 
-const ReportsPage: FC = () => {
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">گزارش‌ها</h1>
-        <p className="text-gray-600 mt-1">گزارش‌های مختلف سیستم</p>
-      </div>
-
-      <div className="bg-white rounded-lg shadow-sm border p-6">
-        <p className="text-gray-500">صفحه گزارش‌ها در حال توسعه است...</p>
-      </div>
+      <h1 className="text-xl font-bold text-foreground">گزارش‌ها</h1>
+      <ReportsDashboard data={data} />
     </div>
   );
-};
-
-export default ReportsPage;
+}

@@ -52,7 +52,7 @@ export const ProductForm: FC<Props> = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6 bg-white p-6 rounded-lg shadow-md"
+        className="space-y-6 bg-card p-6 rounded-lg shadow-md border transition-colors duration-300"
       >
         {/* نام محصول */}
         <FormField
