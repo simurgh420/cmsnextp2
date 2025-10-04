@@ -18,7 +18,7 @@ const OrdersPage = async () => {
       </Link>
       <h1 className="text-xl font-bold">مدیریت سفارش‌ها</h1>
       <Suspense fallback={<OrderTableSkeleton rows={0} />}>
-      <OrderTable orders={orders} />
+        <OrderTable orders={orders} />
       </Suspense>
     </div>
   );

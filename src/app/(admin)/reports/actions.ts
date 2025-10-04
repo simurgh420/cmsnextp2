@@ -2,7 +2,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
-import { ReportsData } from '@/lib/types';  
+import { ReportsData } from '@/lib/types';
 
 export async function getReportsData(): Promise<ReportsData> {
   const totalOrders = await prisma.order.count();
