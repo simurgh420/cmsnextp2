@@ -1,7 +1,6 @@
 'use client';
 
 import { FC, useState } from 'react';
-import { MdNotifications } from 'react-icons/md';
 import { NotificationDropdown } from '@/components/notifications/notification-dropdown';
 import { Button } from '@/components/ui';
 import {

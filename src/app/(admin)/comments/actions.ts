@@ -18,6 +18,7 @@ import {
 export async function getAllCommentsAction(
   page: number = 1,
   pageSize: number = 5,
+ 
 ) {
   return listAllComments(page, pageSize);
 }

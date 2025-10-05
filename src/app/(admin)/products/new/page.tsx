@@ -1,4 +1,4 @@
-import { FC } from 'react';
+
 import { Button } from '@/components/ui';
 import { FaArrowRight } from 'react-icons/fa';
 import Link from 'next/link';
@@ -6,7 +6,7 @@ import { ProductForm } from '@/components/products/ProductForm';
 import { createProduct } from '../actions';
 import { getCategories } from '../../categories/actions';
 
-const NewProductPage: FC = async () => {
+const NewProductPage = async () => {
   const categories = await getCategories();
   return (
     <div className="space-y-6">
