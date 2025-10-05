@@ -19,11 +19,13 @@ import { useRouter } from 'next/navigation';
 import { Edit, Eye, Trash2 } from 'lucide-react';
 import { deleteProduct } from '@/app/(admin)/products/actions';
 import { useNotify } from '@/lib/notify';
+import { useAuth } from '@clerk/nextjs';
 
 export const ProductRow = ({ product }: { product: Product }) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const notify = useNotify();
+  const { userId } = useAuth();
 
   const handleDelete = async () => {
     try {
@@ -80,15 +82,26 @@ export const ProductRow = ({ product }: { product: Product }) => {
           </Button>
         </Link>
         {/* دکمه ویرایش */}
-        <Link
-          href={`/products/edit/${product.id}`}
-          className="inline-flex items-center"
-        >
-          <Button variant="outline" size="sm" className="text-xs h-8 px-3">
-            <Edit className="h-4 w-4 mr-2" />
-            ویرایش
+        {userId ? (
+          <Link
+            href={`/admin/products/edit/${product.id}`}
+            className="inline-flex items-center"
+          >
+            <Button variant="outline" size="sm" className="text-xs h-8 px-3">
+              <Edit className="h-4 w-4 mr-2" />
+              ویرایش
+            </Button>
+          </Link>
+        ) : (
+          <Button
+            variant="outline"
+            size="sm"
+            disabled
+            className="text-xs h-8 px-3"
+          >
+            برای ویرایش وارد شوید
           </Button>
-        </Link>
+        )}
         {/* دکمه حذف با Dialog */}
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>

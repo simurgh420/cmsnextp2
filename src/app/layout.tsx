@@ -25,7 +25,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        // یا light, neobrutalism, shadesOfPurple و ...
+        variables: {
+          colorPrimary: '#4f46e5', // رنگ اصلی (مثلاً رنگ برند سایتت)
+          colorBackground: '#0f172a', // پس‌زمینه
+          colorText: '#f8fafc', // رنگ متن
+          borderRadius: '0.5rem', // گوشه‌های گرد
+          fontFamily: 'Inter, sans-serif',
+        },
+        elements: {
+          card: 'shadow-xl border border-gray-700 bg-gray-900', // استایل کارت
+          headerTitle: 'text-2xl font-bold text-white',
+          headerSubtitle: 'text-gray-400',
+          formButtonPrimary: 'bg-indigo-600 hover:bg-indigo-700 text-white',
+          formFieldInput: 'rounded-md border-gray-600 bg-gray-800 text-white',
+        },
+      }}
+    >
       <html lang="fa" dir="rtl" suppressHydrationWarning>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground transition-colors duration-300`}

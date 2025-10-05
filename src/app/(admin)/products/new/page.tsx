@@ -1,13 +1,19 @@
-
 import { Button } from '@/components/ui';
 import { FaArrowRight } from 'react-icons/fa';
 import Link from 'next/link';
 import { ProductForm } from '@/components/products/ProductForm';
 import { createProduct } from '../actions';
 import { getCategories } from '../../categories/actions';
-
+// Clerk imports
+import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
 const NewProductPage = async () => {
+  // گرفتن وضعیت کاربر
+  const { userId } = await auth();
   const categories = await getCategories();
+  if (!userId) {
+    redirect('/sign-in');
+  }
   return (
     <div className="space-y-6">
       {/* هدر صفحه */}
