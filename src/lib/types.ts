@@ -2,6 +2,7 @@
 import { Prisma, Status, Product, Comment } from '@prisma/client';
 import { OrderSchema } from './validations/order';
 import { ProductSchema } from './validations/product';
+import { CommentSchema } from './validations/comment';
 // Product types and props:
 export type ProductFormData = {
   name: string;
@@ -25,6 +26,12 @@ export type Category = {
 // Comment types and props
 export type CommentWithProduct = Comment & {
   product: Product;
+};
+export type CommentFormProps = {
+  products: { id: string; name: string }[];
+  users?: { id: string; name: string }[];
+  initialData?: Partial<CommentSchema>;
+  action: (data: CommentSchema) => Promise<void>;
 };
 export type UpdateCommentInput = {
   id: string;
@@ -125,4 +132,12 @@ export type DashboardData = {
   categories: {
     kpis: CategoriesKpis;
   };
+};
+
+// notif types
+export type NotifyArgs = {
+  title?: string;
+  message: string;
+  type?: 'success' | 'error' | 'info' | 'warning';
+  duration?: number; // 👈 مدت زمان نمایش toast
 };

@@ -4,11 +4,12 @@ import { Button } from '@/components/ui';
 import { Trash } from 'lucide-react';
 import { deleteOrder } from '@/app/(admin)/orders/actions';
 import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
+import { useNotify } from '@/lib/notify';
 
 export function DeleteOrderButton({ id }: { id: string }) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const notify = useNotify();
   const handleDelete = () => {
     const confirmed = confirm(
       'آیا مطمئن هستید که می‌خواهید این سفارش را حذف کنید؟',
@@ -19,10 +20,20 @@ export function DeleteOrderButton({ id }: { id: string }) {
       try {
         await deleteOrder(id);
         router.refresh(); // برای رفرش شدن لیست بعد از حذف
-        toast.success('سفارش با موفقیت حذف شد.');
+        notify({
+          title: 'موفقیت',
+          message: '✅سفارش با موفقیت حذف شد',
+          type: 'success',
+          duration: 5000,
+        });
       } catch (error) {
         console.error(error);
-        toast.error('خطایی رخ داده است. سفارش حذف نشد.');
+        notify({
+          title: 'خطا',
+          message: '❌ارتباط با سرور برقرار نشد',
+          type: 'error',
+          duration: Infinity,
+        });
       }
     });
   };

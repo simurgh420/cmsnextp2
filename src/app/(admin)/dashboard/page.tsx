@@ -15,3 +15,4 @@ export default async function DashboardPage() {
     </div>
   );
 }
+export const revalidate = 300; // ISR: هر 5 دقیقه

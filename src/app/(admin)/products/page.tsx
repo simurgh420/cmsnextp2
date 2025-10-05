@@ -3,13 +3,18 @@ import { ProductsTable } from '@/components/products/ProductsTable';
 import { Button } from '@/components/ui';
 import { FaPlus } from 'react-icons/fa';
 import Link from 'next/link';
-
 import { Status } from '@prisma/client';
 import { ProductTableSkeleton } from '@/components/products/product-table-skeleton';
 import { getProducts } from './actions';
-const ProductsPage = async () => {
-  const products = await getProducts();
-
+import { Pagination } from '@/components/Pagination';
+const ProductsPage = async ({
+  searchParams,
+}: {
+  searchParams: { page?: string };
+}) => {
+  const page = Number(searchParams.page) || 1;
+  const pageSize = 5; // تعداد محصولات در هر صفحه
+  const { items, totalPages } = await getProducts(page, pageSize);
   return (
     <div className="space-y-6">
       {/* هدر صفحه */}
@@ -33,19 +38,19 @@ const ProductsPage = async () => {
         <div className="bg-card p-4 rounded-lg shadow-sm border">
           <div className="text-sm text-muted-foreground">کل محصولات</div>
           <div className="text-2xl font-bold text-foreground">
-            {products.length}
+            {items.length}
           </div>
         </div>
         <div className="bg-card p-4 rounded-lg shadow-sm border">
           <div className="text-sm text-muted-foreground">محصولات فعال</div>
           <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-            {products.filter((p) => p.status === Status.ACTIVE).length}
+            {items.filter((p) => p.status === Status.ACTIVE).length}
           </div>
         </div>
         <div className="bg-card p-4 rounded-lg shadow-sm border">
           <div className="text-sm text-muted-foreground">محصولات غیرفعال</div>
           <div className="text-2xl font-bold text-red-600 dark:text-red-400">
-            {products.filter((p) => p.status === Status.INACTIVE).length}
+            {items.filter((p) => p.status === Status.INACTIVE).length}
           </div>
         </div>
       </div>
@@ -59,12 +64,13 @@ const ProductsPage = async () => {
         </div>
         <div className="overflow-x-auto">
           <Suspense fallback={<ProductTableSkeleton rows={8} />}>
-            <ProductsTable products={products} />
+            <ProductsTable products={items} />
           </Suspense>
+          <Pagination page={page} totalPages={totalPages} />
         </div>
       </div>
     </div>
   );
 };
-
+export const revalidate = 3600; // ISR: هر 1 ساعت rebuild
 export default ProductsPage;

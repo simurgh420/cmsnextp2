@@ -2,7 +2,7 @@
 
 import { FC, useState } from 'react';
 import { MdNotifications } from 'react-icons/md';
-
+import { NotificationDropdown } from '@/components/notifications/notification-dropdown';
 import { Button } from '@/components/ui';
 import {
   useUser,
@@ -22,7 +22,7 @@ export const Header: FC = () => {
       {/* سمت چپ: آیکون‌ها و جستجو */}
       <div className="flex items-center gap-4">
         <ThemeToggle />
-        <MdNotifications className="text-muted-foreground" size={22} />
+        <NotificationDropdown />
         <div className="flex items-center gap-2">
           <div
             className={`flex items-center gap-2 rounded-lg border border-input bg-background px-3 py-2 shadow-sm transition-all duration-300 overflow-hidden ${

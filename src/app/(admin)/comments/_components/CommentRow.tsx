@@ -1,14 +1,6 @@
-'use client';
-
-import { Comment, Product } from '@prisma/client';
 import { TableCell, TableRow } from '@/components/ui';
 import CommentActions from './CommentActions';
-
-type CommentWithExtras = Comment & {
-  product?: Product | null;
-  userName?: string; // 👈 اضافه شد
-};
-
+import { CommentWithExtras } from '@/lib/types';
 export default function CommentRow({
   comment,
 }: {

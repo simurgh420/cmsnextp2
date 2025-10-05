@@ -5,9 +5,9 @@ import { categorySchema, CategorySchema } from '@/lib/validations/category';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '../ui/input';
-import { toast } from 'sonner';
-import { createCategory } from '@/app/(admin)/categories/actions';
 
+import { createCategory } from '@/app/(admin)/categories/actions';
+import { useNotify } from '@/lib/notify';
 export default function NewCategoryForm() {
   const {
     register,
@@ -20,12 +20,23 @@ export default function NewCategoryForm() {
       slug: '',
     },
   });
+  const notify = useNotify();
   const onSubmit = async (data: CategorySchema) => {
     try {
       await createCategory(data);
-      toast.success('دسته‌بندی با موفقیت ثبت شد');
+      notify({
+        title: 'موفقیت',
+        message: '✅دسته‌بندی با موفقیت ثبت شد',
+        type: 'success',
+        duration: 5000, // بعد از ۵ ثانیه toast بسته میشه
+      });
     } catch (error) {
-      toast.error('ارتباط با سرور برقرار نشد');
+      notify({
+        title: 'خطا',
+        message: 'ارتباط با سرور برقرار نشد❌',
+        type: 'error',
+        duration: Infinity, // toast تا وقتی کاربر نبنده می‌مونه
+      });
     }
   };
   return (

@@ -12,24 +12,36 @@ import {
   DialogTrigger,
 } from '@/components/ui';
 import { Button } from '@/components/ui';
-import { TableCell, TableRow } from '@/components/ui';
+import { TableCell, TableRow } from '@/components/ui/table';
 import Image from 'next/image';
 import { Status } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { Edit, Eye, Trash2 } from 'lucide-react';
-import { toast } from 'sonner';
 import { deleteProduct } from '@/app/(admin)/products/actions';
+import { useNotify } from '@/lib/notify';
 
 export const ProductRow = ({ product }: { product: Product }) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const notify = useNotify();
+
   const handleDelete = async () => {
     try {
       await deleteProduct(product.id);
-      toast.success('محصول با موفقیت حذف شد');
+      notify({
+        title: 'موفقیت',
+        message: `✅محصول «${product.name}» با موفقیت حذف شد`,
+        type: 'success',
+        duration: 5000,
+      });
       router.refresh();
     } catch (error) {
-      toast.error('خطا در حذف محصول');
+      notify({
+        title: 'خطا',
+        message: '❌خطا در حذف محصول',
+        type: 'error',
+        duration: Infinity,
+      });
     } finally {
       setOpen(false);
     }

@@ -5,9 +5,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui';
 import { categorySchema, CategorySchema } from '@/lib/validations/category';
 import { Input } from '../ui/input';
-import { toast } from 'sonner';
 import { updateCategory } from '@/app/(admin)/categories/actions';
 import { Category } from '@/lib/types';
+import { useNotify } from '@/lib/notify';
 
 export default function EditCategoryForm({ category }: { category: Category }) {
   const {
@@ -21,12 +21,23 @@ export default function EditCategoryForm({ category }: { category: Category }) {
       slug: category.slug,
     },
   });
+  const notify = useNotify();
   const onSubmit = async (data: CategorySchema) => {
     try {
       await updateCategory(category.id, data);
-      toast.success('دسته‌بندی با موفقیت ویرایش شد');
+      notify({
+        title: 'موفقیت',
+        message: 'دسته‌بندی با موفقیت ویرایش شد✅',
+        type: 'success',
+        duration: 5000,
+      });
     } catch (error) {
-      toast.error('ارتباط با سرور برقرار نشد');
+      notify({
+        title: 'خطا',
+        message: '❌ارتباط با سرور برقرار نشد',
+        type: 'error',
+        duration: Infinity, // toast تا وقتی کاربر نبنده می‌مونه
+      });
     }
   };
 

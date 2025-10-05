@@ -9,3 +9,4 @@ export default function Settings() {
     </div>
   );
 }
+export const revalidate = 86400; // SSG: هر 24 ساعت

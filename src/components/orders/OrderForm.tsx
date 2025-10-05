@@ -24,7 +24,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
 import { toast } from 'sonner';
 import { useTransition } from 'react';
 import { OrdersProps } from '@/lib/types';
-
+import { useNotify } from '@/lib/notify';
 export default function OrderForm({
   products,
   defaultValues,
@@ -33,7 +33,7 @@ export default function OrderForm({
   orderId,
 }: OrdersProps) {
   const [isPending, startTransition] = useTransition();
-
+  const notify = useNotify();
   const form = useForm<OrderSchemaInput>({
     resolver: zodResolver(orderSchema),
     defaultValues: {
@@ -58,17 +58,26 @@ export default function OrderForm({
     startTransition(async () => {
       try {
         await action(formData);
-        toast.success(
-          isEdit ? 'سفارش با موفقیت به‌روزرسانی شد' : 'سفارش با موفقیت ثبت شد',
-        );
+        notify({
+          title: 'موفقیت',
+          message: isEdit
+            ? '✅سفارش با موفقیت به‌روزرسانی شد'
+            : '✅سفارش با موفقیت ثبت شد',
+          type: 'success',
+          duration: 5000,
+        });
         if (!isEdit) {
           form.reset();
         }
       } catch (error: any) {
-        toast.error(
-          error?.message ||
-            (isEdit ? 'خطا در به‌روزرسانی سفارش' : 'خطا در ثبت سفارش'),
-        );
+        notify({
+          title: 'خطا',
+          message:
+            error?.message ||
+            (isEdit ? '❌خطا در به‌روزرسانی سفارش' : '❌خطا در ثبت سفارش'),
+          type: 'error',
+          duration: Infinity,
+        });
       }
     });
   };

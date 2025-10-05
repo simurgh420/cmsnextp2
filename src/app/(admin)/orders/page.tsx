@@ -23,5 +23,5 @@ const OrdersPage = async () => {
     </div>
   );
 };
-
+export const revalidate = 1800; // ISR: هر 30 دقیقه
 export default OrdersPage;

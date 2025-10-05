@@ -1,18 +1,29 @@
 'use server';
 
-// 📌 گرفتن همه محصولات
-
 import { prisma } from '@/lib/prisma';
 import { productSchema, ProductSchema } from '@/lib/validations/product';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-export async function getProducts() {
-  return await prisma.product.findMany({
-    include: { category: true },
-    orderBy: {
-      createdAt: 'desc',
-    },
-  });
+// 📌 گرفتن همه محصولات و عمال کردن پیجینیشن
+
+export async function getProducts(page: number = 1, pageSize: number = 5) {
+  const [items, total] = await Promise.all([
+    prisma.product.findMany({
+      include: { category: true },
+      orderBy: { createdAt: 'desc' },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    }),
+    prisma.product.count(),
+  ]);
+
+  return {
+    items,
+    total,
+    totalPages: Math.ceil(total / pageSize),
+    page,
+    pageSize,
+  };
 }
 //📌 گرفتن اسم و ایدی محصول فقط
 export async function getProductsForSelect() {

@@ -19,19 +19,16 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui';
-import { toast } from 'sonner';
-type CommentFormProps = {
-  products: { id: string; name: string }[];
-  users?: { id: string; name: string }[];
-  initialData?: Partial<CommentSchema>;
-  action: (data: CommentSchema) => Promise<void>;
-};
+import { useNotify } from '@/lib/notify';
+
+import { CommentFormProps } from '@/lib/types';
 
 export default function CommentForm({
   products,
   initialData,
   action,
 }: CommentFormProps) {
+  const notify = useNotify();
   const form = useForm<Omit<CommentSchema, 'userId'>>({
     resolver: zodResolver(commentSchema),
     defaultValues: {
@@ -42,10 +39,21 @@ export default function CommentForm({
   const onSubmit = async (data: CommentSchema) => {
     try {
       await action(data); // 👈 مستقیم اکشن رو صدا می‌زنی
-      toast.success('کامنت با موفقیت ثبت شد ✅');
+      notify({
+        title: 'موفقیت',
+        message: 'کامنت با موفقیت ثبت شد ✅',
+        type: 'success',
+        duration: 5000,
+      });
+      form.reset(); // 👈 اختیاری: بعد از ثبت موفق فرم رو ریست کن
     } catch (error) {
       console.error(error);
-      toast.error('خطا در ثبت کامنت ❌');
+      notify({
+        title: 'خطا',
+        message: 'خطا در ثبت کامنت ❌',
+        type: 'error',
+        duration: Infinity,
+      });
     }
   };
   return (

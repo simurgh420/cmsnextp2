@@ -1,4 +1,3 @@
-import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -13,23 +12,18 @@ import {
 } from '@/components/ui';
 import { Badge } from '@/components/ui';
 import DeleteProductButton from './DeleteProductButton';
+import { getProduct } from '../actions';
 
 interface Props {
   params: Promise<{ id: string }>;
 }
-
 export default async function ProductDetailPage({ params }: Props) {
   const resolvedParams = await params;
   if (!resolvedParams.id) {
     return notFound();
   }
   const { id } = resolvedParams;
-  const product = await prisma.product.findUnique({
-    where: { id },
-    include: {
-      category: true,
-    },
-  });
+  const product = await getProduct(id);
   if (!product) return notFound();
   const statusColor =
     product.status === 'ACTIVE'
@@ -98,3 +92,4 @@ export default async function ProductDetailPage({ params }: Props) {
     </div>
   );
 }
+export const revalidate = 1800; // ISR: هر 30 دقیقه

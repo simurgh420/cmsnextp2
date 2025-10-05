@@ -13,23 +13,33 @@ import { Button } from '@/components/ui';
 import Link from 'next/link';
 import { useTransition } from 'react';
 import { commentQuickAction } from '../actions';
-import { toast } from 'sonner';
 
+import { useNotify } from '@/lib/notify';
 export default function CommentActions({ id }: { id: string }) {
   const [isPending, startTransition] = useTransition();
+  const notify = useNotify();
   function handleAction(action: 'approve' | 'reject' | 'delete') {
     startTransition(async () => {
       try {
         await commentQuickAction(id, action);
-        toast.success(
-          action === 'approve'
-            ? 'کامنت تأیید شد'
-            : action === 'reject'
-              ? 'کامنت رد شد'
-              : 'کامنت حذف شد',
-        );
+        notify({
+          title: 'موفقیت',
+          message:
+            action === 'approve'
+              ? '✅کامنت تأیید شد'
+              : action === 'reject'
+                ? '❌کامنت رد شد'
+                : '❌کامنت حذف شد',
+          type: 'success',
+          duration: 5000,
+        });
       } catch (error) {
-        toast.error('خطا در انجام عملیات');
+        notify({
+          title: 'خطا',
+          message: '❌خطا در انجام عملیات',
+          type: 'error',
+          duration: Infinity,
+        });
       }
     });
   }
