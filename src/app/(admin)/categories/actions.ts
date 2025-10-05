@@ -1,8 +1,8 @@
 'use server';
 import { prisma } from '@/lib/prisma';
 import { categorySchema, CategorySchema } from '@/lib/validations/category';
+import { auth } from '@clerk/nextjs/server';
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 
 // 📌 گرفتن همه دسته‌بندی‌ها
 
@@ -45,6 +45,8 @@ export async function updateCategory(id: string, data: CategorySchema) {
 // 📌 حذف دسته‌بندی
 
 export async function deleteCategory(id: string) {
+  const { userId } = await auth();
+  if (!userId) throw new Error('Unauthorized');
   await prisma.category.delete({
     where: { id },
   });

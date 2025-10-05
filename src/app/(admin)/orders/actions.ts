@@ -8,7 +8,6 @@ import { OrderStatus } from '@prisma/client';
 import { orderSchema } from '@/lib/validations/order';
 import { Role } from '@/lib/types';
 import { OrderWithExtras } from '@/lib/types';
-import { skip } from 'node:test';
 
 // گرفتن سفارش ها
 export async function getOrders(page: number = 1, pageSize: number = 5) {
@@ -118,6 +117,8 @@ export async function updateOrder(formData: FormData) {
 
 // 🔴 حذف سفارش
 export async function deleteOrder(id: string) {
+  const { userId } = await auth();
+  if (!userId) throw new Error('Unauthorized');
   await prisma.order.delete({
     where: { id },
   });
