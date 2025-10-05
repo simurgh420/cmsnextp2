@@ -10,10 +10,11 @@ import { Pagination } from '@/components/Pagination';
 const ProductsPage = async ({
   searchParams,
 }: {
-  searchParams: { page?: string };
+  searchParams: Promise<{ page?: string; pageSize?: string }>;
 }) => {
-  const page = Number(searchParams.page) || 1;
-  const pageSize = 5; // تعداد محصولات در هر صفحه
+  const params = await searchParams;
+  const page = Number(params.page) || 1;
+  const pageSize = Number(params.pageSize) || 5;
   const { items, totalPages } = await getProducts(page, pageSize);
   return (
     <div className="space-y-6">

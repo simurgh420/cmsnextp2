@@ -9,10 +9,11 @@ import { Pagination } from '@/components/Pagination';
 export default async function CommentsPage({
   searchParams,
 }: {
-  searchParams: { page?: string; pageSize?: string };
+  searchParams: Promise<{ page?: string; pageSize?: string }>;
 }) {
-  const page = Number(searchParams.page) || 1;
-  const pageSize = Number(searchParams.pageSize) || 5;
+  const params = await searchParams;
+  const page = Number(params.page) || 1;
+  const pageSize = Number(params.pageSize) || 5;
   const { item, totalPages } = await getAllCommentsAction(page, pageSize);
   return (
     <div className="space-y-6">

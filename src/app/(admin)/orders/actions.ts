@@ -8,9 +8,10 @@ import { OrderStatus } from '@prisma/client';
 import { orderSchema } from '@/lib/validations/order';
 import { Role } from '@/lib/types';
 import { OrderWithExtras } from '@/lib/types';
+import { skip } from 'node:test';
 
 // گرفتن سفارش ها
-export async function getOrders() {
+export async function getOrders(page: number = 1, pageSize: number = 5) {
   const { userId } = await auth();
   if (!userId) throw new Error('کاربر احراز هویت نشده است');
   const user = await currentUser();
@@ -19,14 +20,23 @@ export async function getOrders() {
   const baseQuery = {
     include: { product: true },
     orderBy: { createdAt: 'desc' } as const,
+    skip: (page - 1) * pageSize,
+    take: pageSize,
   };
-  const orders =
+  const [orders, total] =
     role === 'admin'
-      ? await prisma.order.findMany(baseQuery)
-      : await prisma.order.findMany({
-          ...baseQuery,
-          where: { userId },
-        });
+      ? await Promise.all([
+          prisma.order.findMany(baseQuery),
+          prisma.order.count(),
+        ])
+      : await Promise.all([
+          prisma.order.findMany({
+            ...baseQuery,
+            where: { userId },
+          }),
+          prisma.order.count({ where: { userId } }),
+        ]);
+  // گرفتن نام کاربران
   const userIds = [...new Set(orders.map((o) => o.userId))];
   const client = await clerkClient();
   const usersResponse = await client.users.getUserList({ userId: userIds });
@@ -37,10 +47,17 @@ export async function getOrders() {
       u.fullName || u.username || u.emailAddresses[0]?.emailAddress,
     ]),
   );
-  return orders.map((order) => ({
+  const items = orders.map((order) => ({
     ...order,
     userName: userMap.get(order.userId) ?? 'ناشناس',
   })) as OrderWithExtras[];
+  return {
+    items,
+    total,
+    totalPages: Math.ceil(total / pageSize),
+    page,
+    pageSize,
+  };
 }
 // گرفتن سفارش
 export async function getOrderById(id: string) {

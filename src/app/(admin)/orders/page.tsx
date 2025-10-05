@@ -5,9 +5,18 @@ import { FaPlus } from 'react-icons/fa';
 import { Button } from '@/components/ui';
 import { Suspense } from 'react';
 import { OrderTableSkeleton } from '@/components/orders/order-table-skeleton';
+import { Pagination } from '@/components/Pagination';
 
-const OrdersPage = async () => {
-  const orders = await getOrders();
+const OrdersPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: number; pageSize?: number }>;
+}) => {
+  const params = await searchParams;
+  const page = Number(params.page) || 1;
+  const pageSize = Number(params.pageSize) || 5;
+  const { items, totalPages } = await getOrders(page, pageSize);
+
   return (
     <div className="space-y-6">
       <Link href={'/orders/new'}>
@@ -18,8 +27,9 @@ const OrdersPage = async () => {
       </Link>
       <h1 className="text-xl font-bold">مدیریت سفارش‌ها</h1>
       <Suspense fallback={<OrderTableSkeleton rows={0} />}>
-        <OrderTable orders={orders} />
+        <OrderTable orders={items} />
       </Suspense>
+      <Pagination page={page} totalPages={totalPages} />
     </div>
   );
 };
