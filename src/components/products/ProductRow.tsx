@@ -103,35 +103,46 @@ export const ProductRow = ({ product }: { product: Product }) => {
           </Button>
         )}
         {/* دکمه حذف با Dialog */}
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <Button
-              variant="destructive"
-              size="sm"
-              className="text-xs px-2 py-1"
-            >
-              <Trash2 className="h-4 w-4 mr-2" />
-              حذف
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>آیا مطمئن هستید؟</DialogTitle>
-            </DialogHeader>
-            <p className="text-sm text-muted-foreground">
-              این عملیات غیرقابل بازگشت است. محصول «{product.name}» حذف خواهد
-              شد.
-            </p>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setOpen(false)}>
-                انصراف
+        {userId ? (
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <Button
+                variant="destructive"
+                size="sm"
+                className="text-xs px-2 py-1"
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                حذف
               </Button>
-              <Button variant="destructive" onClick={handleDelete}>
-                حذف محصول
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>آیا مطمئن هستید؟</DialogTitle>
+              </DialogHeader>
+              <p className="text-sm text-muted-foreground">
+                این عملیات غیرقابل بازگشت است. محصول «{product.name}» حذف خواهد
+                شد.
+              </p>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setOpen(false)}>
+                  انصراف
+                </Button>
+                <Button variant="destructive" onClick={handleDelete}>
+                  حذف محصول
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        ) : (
+          <Button
+            variant="destructive"
+            size="sm"
+            disabled
+            className="text-xs px-2 py-1 opacity-50 cursor-not-allowed"
+          >
+            برای حذف وارد شوید
+          </Button>
+        )}
       </TableCell>
     </TableRow>
   );

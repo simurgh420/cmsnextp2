@@ -2,6 +2,7 @@
 
 import { prisma } from '@/lib/prisma';
 import { productSchema, ProductSchema } from '@/lib/validations/product';
+import { auth } from '@clerk/nextjs/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 // 📌 گرفتن همه محصولات و عمال کردن پیجینیشن
@@ -76,6 +77,8 @@ export async function updateProduct(id: string, data: ProductSchema) {
 // 📌 حذف محصول
 
 export async function deleteProduct(id: string) {
+  const { userId } = await auth();
+  if (!userId) throw new Error('Unauthorized');
   await prisma.product.delete({
     where: { id },
   });

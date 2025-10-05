@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import { deleteProduct } from '../actions';
+import { useAuth } from '@clerk/nextjs';
 
 export default function DeleteProductButton({
   id,
@@ -21,6 +22,7 @@ export default function DeleteProductButton({
   id: string;
   name: string;
 }) {
+  const { userId } = useAuth();
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const handleDelete = () => {
@@ -35,7 +37,7 @@ export default function DeleteProductButton({
       }
     });
   };
-  return (
+  return userId ? (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="destructive" size="sm" className="text-xs px-2 py-1">
@@ -65,5 +67,14 @@ export default function DeleteProductButton({
         </DialogFooter>
       </DialogContent>
     </Dialog>
+  ) : (
+    <Button
+      variant="destructive"
+      size="sm"
+      disabled
+      className="text-xs px-2 py-1 opacity-50 cursor-not-allowed"
+    >
+      برای حذف وارد شوید
+    </Button>
   );
 }

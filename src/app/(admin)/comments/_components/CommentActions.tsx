@@ -15,10 +15,21 @@ import { useTransition } from 'react';
 import { commentQuickAction } from '../actions';
 
 import { useNotify } from '@/lib/notify';
+import { useAuth } from '@clerk/nextjs';
 export default function CommentActions({ id }: { id: string }) {
+  const { userId } = useAuth();
   const [isPending, startTransition] = useTransition();
   const notify = useNotify();
   function handleAction(action: 'approve' | 'reject' | 'delete') {
+    if (!userId) {
+      notify({
+        title: 'عدم دسترسی',
+        message: 'برای انجام عملیات ابتدا وارد شوید',
+        type: 'error',
+        duration: 5000,
+      });
+      return;
+    }
     startTransition(async () => {
       try {
         await commentQuickAction(id, action);
@@ -46,9 +57,21 @@ export default function CommentActions({ id }: { id: string }) {
 
   return (
     <div className="flex gap-2">
-      <Button size="sm" variant="default" asChild>
-        <Link href={`/comments/${id}/edit`}>ویرایش</Link>
-      </Button>
+      {userId ? (
+        <Button size="sm" variant="default" asChild>
+          <Link href={`/comments/${id}/edit`}>ویرایش</Link>
+        </Button>
+      ) : (
+        <Button
+          size="sm"
+          variant="default"
+          disabled
+          className="opacity-50 cursor-not-allowed"
+        >
+          برای ویرایش وارد شوید
+        </Button>
+      )}
+
       <Button
         size="sm"
         variant="default"

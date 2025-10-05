@@ -5,12 +5,23 @@ import { Trash } from 'lucide-react';
 import { deleteOrder } from '@/app/(admin)/orders/actions';
 import { useRouter } from 'next/navigation';
 import { useNotify } from '@/lib/notify';
+import { useAuth } from '@clerk/nextjs';
 
 export function DeleteOrderButton({ id }: { id: string }) {
+  const { userId } = useAuth(); // اضافه شد
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const notify = useNotify();
   const handleDelete = () => {
+    if (!userId) {
+      notify({
+        title: 'عدم دسترسی',
+        message: 'برای حذف سفارش ابتدا وارد شوید',
+        type: 'error',
+        duration: 5000,
+      });
+      return;
+    }
     const confirmed = confirm(
       'آیا مطمئن هستید که می‌خواهید این سفارش را حذف کنید؟',
     );

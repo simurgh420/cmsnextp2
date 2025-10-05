@@ -3,11 +3,23 @@ import { Button } from '../ui/button';
 import { useTransition } from 'react';
 import { deleteCategory } from '@/app/(admin)/categories/actions';
 import { useNotify } from '@/lib/notify';
+import { useAuth } from '@clerk/nextjs';
 
 export default function DeleteCategoryButton({ id }: { id: string }) {
+  const { userId } = useAuth(); // اضافه شد
   const [isPending, startTransition] = useTransition();
   const notify = useNotify();
   const handleDelete = async () => {
+    if (!userId) {
+      notify({
+        title: 'عدم دسترسی',
+        message: 'برای حذف دسته‌بندی ابتدا وارد شوید',
+        type: 'error',
+        duration: 5000,
+      });
+      return;
+    }
+
     if (!confirm('آیا مطمئن هستید که می‌خواهید این دسته‌بندی را حذف کنید؟'))
       return;
     startTransition(async () => {
