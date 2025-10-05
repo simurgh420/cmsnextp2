@@ -1,9 +1,9 @@
 'use client';
 
 import { FC, useState } from 'react';
-import { MdShuffle, MdNotifications } from 'react-icons/md';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { MdNotifications } from 'react-icons/md';
+
+import { Button } from '@/components/ui';
 import {
   useUser,
   UserButton,

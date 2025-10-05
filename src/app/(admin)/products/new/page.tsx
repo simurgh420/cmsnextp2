@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui';
 import { FaArrowRight } from 'react-icons/fa';
 import Link from 'next/link';
 import { ProductForm } from '@/components/products/ProductForm';

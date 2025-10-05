@@ -1,5 +1,5 @@
 // components/products/product-table-skeleton.tsx
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@/components/ui';
 
 export function CommentsTableSkeleton({ rows = 10 }: { rows?: number }) {
   return (

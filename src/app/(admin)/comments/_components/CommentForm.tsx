@@ -1,15 +1,15 @@
 'use client';
 import { useForm } from 'react-hook-form';
-import { Form } from '@/components/ui/form';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
+import { Form } from '@/components/ui';
+import { Button } from '@/components/ui';
+import { Textarea } from '@/components/ui';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from '@/components/ui';
 import { commentSchema, CommentSchema } from '@/lib/validations/comment';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -18,7 +18,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
+} from '@/components/ui';
 import { toast } from 'sonner';
 type CommentFormProps = {
   products: { id: string; name: string }[];

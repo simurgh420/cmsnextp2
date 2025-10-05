@@ -3,7 +3,7 @@
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui';
 import {
   Form,
   FormControl,
@@ -11,28 +11,23 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+} from '@/components/ui';
+import { Input } from '@/components/ui';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from '@/components/ui';
 import Link from 'next/link';
-import { Product } from '@prisma/client';
 import { Status } from '@prisma/client';
 import Image from 'next/image';
 import { productSchema, ProductSchema } from '@/lib/validations/product';
-import { Category } from '@prisma/client';
 
-type Props = {
-  initialData?: Partial<Product>; // برای ویرایش
-  onSubmit: (data: ProductSchema) => Promise<void> | Promise<Product>;
-  categories: Category[];
-};
-export const ProductForm: FC<Props> = ({
+import { ProductFormProps } from '@/lib/types';
+
+export const ProductForm: FC<ProductFormProps> = ({
   initialData,
   onSubmit,
   categories,

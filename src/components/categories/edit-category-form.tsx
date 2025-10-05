@@ -2,20 +2,14 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui';
 import { categorySchema, CategorySchema } from '@/lib/validations/category';
 import { Input } from '../ui/input';
 import { toast } from 'sonner';
 import { updateCategory } from '@/app/(admin)/categories/actions';
-type Category = {
-  id: string;
-  name: string;
-  slug: string;
-};
+import { Category } from '@/lib/types';
 
 export default function EditCategoryForm({ category }: { category: Category }) {
-  const router = useRouter();
   const {
     register,
     handleSubmit,

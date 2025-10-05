@@ -1,16 +1,10 @@
 'use client';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui';
 import { Edit, Eye } from 'lucide-react';
 import { DeleteOrderButton } from './DeleteOrderButton';
-import { Prisma } from '@prisma/client';
-type OrderWithProduct = Prisma.OrderGetPayload<{
-  include: { product: true };
-}>;
-type OrderActionsProps = {
-  order: OrderWithProduct;
-};
-export function OrderActions({ order }: OrderActionsProps) {
+import { OrderWithProduct } from '@/lib/types';
+export function OrderActions({ order }: { order: OrderWithProduct }) {
   return (
     <div className="flex gap-2">
       <Link href={`/orders/${order.id}`}>

@@ -1,6 +1,6 @@
 import CommentsTable from './_components/CommentsTable';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui';
 import { getAllCommentsAction } from './actions';
 import { Suspense } from 'react';
 import { CommentsTableSkeleton } from './_components/comment-table-skeleton';

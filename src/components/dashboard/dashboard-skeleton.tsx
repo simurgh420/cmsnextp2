@@ -1,5 +1,5 @@
 // components/dashboard/DashboardSkeleton.tsx
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@/components/ui';
 
 function SectionHeaderSkeleton() {
   return (

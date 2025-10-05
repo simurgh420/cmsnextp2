@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { ProductsTable } from '@/components/products/ProductsTable';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui';
 import { FaPlus } from 'react-icons/fa';
 import Link from 'next/link';
 

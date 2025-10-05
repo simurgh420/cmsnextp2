@@ -1,7 +1,7 @@
 'use client';
 
 import { Comment, Product } from '@prisma/client';
-import { TableCell, TableRow } from '@/components/ui/table';
+import { TableCell, TableRow } from '@/components/ui';
 import CommentActions from './CommentActions';
 
 type CommentWithExtras = Comment & {

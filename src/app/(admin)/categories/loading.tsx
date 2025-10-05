@@ -1,5 +1,5 @@
 // app/categories/loading.tsx
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@/components/ui';
 import CategorySkeleton from '@/components/categories/categories-skeleton';
 
 export default function CategoriesLoading() {

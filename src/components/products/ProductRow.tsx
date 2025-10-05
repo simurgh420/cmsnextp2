@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import { Product } from '@prisma/client';
 import Link from 'next/link';
 import {
@@ -10,20 +10,17 @@ import {
   DialogTitle,
   DialogFooter,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { TableCell, TableRow } from '@/components/ui/table';
+} from '@/components/ui';
+import { Button } from '@/components/ui';
+import { TableCell, TableRow } from '@/components/ui';
 import Image from 'next/image';
 import { Status } from '@prisma/client';
 import { useRouter } from 'next/navigation';
-import { Edit, Trash2 } from 'lucide-react';
+import { Edit, Eye, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { deleteProduct } from '@/app/(admin)/products/actions';
-type Props = {
-  product: Product;
-};
 
-export const ProductRow: FC<Props> = ({ product }) => {
+export const ProductRow = ({ product }: { product: Product }) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const handleDelete = async () => {
@@ -66,7 +63,7 @@ export const ProductRow: FC<Props> = ({ product }) => {
           className="inline-flex items-center"
         >
           <Button variant="secondary" size="sm" className="text-xs h-8 px-3">
-            {' '}
+            <Eye className="h-4 w-4 mr-2" />
             جزئیات
           </Button>
         </Link>

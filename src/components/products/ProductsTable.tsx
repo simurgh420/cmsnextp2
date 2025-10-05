@@ -1,5 +1,3 @@
-'use client';
-
 import { ProductRow } from './ProductRow';
 import {
   Table,
@@ -7,13 +5,10 @@ import {
   TableHeader,
   TableHead,
   TableRow,
-} from '@/components/ui/table';
+} from '@/components/ui';
 import { Product } from '@prisma/client';
-type ProductsTableProps = {
-  products: Product[];
-};
 
-export const ProductsTable = ({ products }: ProductsTableProps) => {
+export const ProductsTable = ({ products }: { products: Product[] }) => {
   return (
     <Table>
       <TableHeader>

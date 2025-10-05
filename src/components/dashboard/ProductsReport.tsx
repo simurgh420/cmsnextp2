@@ -2,7 +2,7 @@
 'use client';
 
 import { ProductsKpis, ProductsByCategory, TopProduct } from '@/lib/types';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui';
 import {
   BarChart,
   Bar,

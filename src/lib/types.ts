@@ -1,6 +1,8 @@
 // types.ts
 import { Prisma, Status, Product, Comment } from '@prisma/client';
-
+import { OrderSchema } from './validations/order';
+import { ProductSchema } from './validations/product';
+// Product types and props:
 export type ProductFormData = {
   name: string;
   price: number;
@@ -9,6 +11,18 @@ export type ProductFormData = {
   image?: string | null;
 };
 
+export type ProductFormProps = {
+  initialData?: Partial<Product>; // برای ویرایش
+  onSubmit: (data: ProductSchema) => Promise<void> | Promise<Product>;
+  categories: Category[];
+};
+// Category type
+export type Category = {
+  id: string;
+  name: string;
+  slug: string;
+};
+// Comment types and props
 export type CommentWithProduct = Comment & {
   product: Product;
 };
@@ -18,18 +32,30 @@ export type UpdateCommentInput = {
   productId?: string | null;
   userId?: string | null;
 };
-export type OrderWithProduct = Prisma.OrderGetPayload<{
-  include: { product: true };
-}>;
 export type CommentWithExtras = Comment & {
   product?: Product | null;
   userName?: string; // 👈 اضافه شد
 };
+// Order types and props
+export type OrderWithProduct = Prisma.OrderGetPayload<{
+  include: { product: true };
+}>;
+
 export type Role = 'admin' | 'user';
 export type OrderWithExtras = OrderWithProduct & {
   userName: string;
 };
 
+type ProductOption = { id: string; name: string; price: number };
+export type OrdersProps = {
+  products: ProductOption[];
+  defaultValues?: Partial<OrderSchema>;
+  action?: (formData: FormData) => Promise<void>;
+  isEdit?: boolean;
+  orderId?: string;
+};
+
+// گزارش‌ها و داشبورد
 export type Kpis = {
   totalOrders: number;
   totalPaid: number;
@@ -62,7 +88,7 @@ export type OrdersByStatus = {
   count: number;
 };
 
-// Products
+// Products report
 export type ProductsKpis = {
   totalProducts: number;
   activeProducts: number;
@@ -79,7 +105,7 @@ export type TopProduct = {
   sales: number;
 };
 
-// Categories
+// Categories report
 export type CategoriesKpis = {
   totalCategories: number;
 };

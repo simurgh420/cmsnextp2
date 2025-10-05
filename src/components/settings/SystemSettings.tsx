@@ -1,9 +1,8 @@
 // components/settings/SystemSettings.tsx
 'use client';
 
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Switch } from '@/components/ui/switch';
-import ThemeToggle from '../ThemeToggle';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui';
+import { Switch } from '@/components/ui';
 import { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
 

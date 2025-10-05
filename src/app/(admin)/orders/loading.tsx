@@ -1,5 +1,5 @@
 // app/orders/loading.tsx
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@/components/ui';
 import { OrderTableSkeleton } from '@/components/orders/order-table-skeleton';
 
 export default function OrdersLoading() {

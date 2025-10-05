@@ -1,5 +1,5 @@
 // app/Reports/loading.tsx
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@/components/ui';
 import { ReportTableSkeleton } from '@/components/reports/report-table-skeleton';
 
 export default function ReportsLoading() {

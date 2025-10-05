@@ -5,7 +5,7 @@ import {
   TableHeader,
   TableHead,
   TableRow,
-} from '@/components/ui/table';
+} from '@/components/ui';
 import CommentRow from './CommentRow';
 import { CommentWithExtras } from '@/lib/types';
 

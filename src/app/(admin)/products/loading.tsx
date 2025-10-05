@@ -1,5 +1,5 @@
 // app/products/loading.tsx
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@/components/ui';
 import { ProductTableSkeleton } from '@/components/products/product-table-skeleton';
 
 export default function ProductsLoading() {

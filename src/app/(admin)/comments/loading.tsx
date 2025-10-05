@@ -1,5 +1,5 @@
 // app/comments/loading.tsx
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@/components/ui';
 import { CommentsTableSkeleton } from './_components/comment-table-skeleton';
 
 export default function CommentsLoading() {

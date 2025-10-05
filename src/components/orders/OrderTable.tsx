@@ -5,15 +5,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from '@/components/ui';
 import { OrderActions } from './OrderActions';
 import { OrderWithExtras } from '@/lib/types';
-
-type OrderTableProps = {
-  orders: OrderWithExtras[];
-};
-
-export default function OrderTable({ orders }: OrderTableProps) {
+export default function OrderTable({ orders }: { orders: OrderWithExtras[] }) {
   return (
     <Table>
       <TableHeader>

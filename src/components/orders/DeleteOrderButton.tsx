@@ -1,17 +1,12 @@
 'use client';
-
 import { useTransition } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui';
 import { Trash } from 'lucide-react';
-import { deleteOrder } from '@/app/(admin)/orders/actions'; // همون اکشنی که قبلاً نوشتی
+import { deleteOrder } from '@/app/(admin)/orders/actions';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
-type DeleteOrderButtonProps = {
-  id: string;
-};
-
-export function DeleteOrderButton({ id }: DeleteOrderButtonProps) {
+export function DeleteOrderButton({ id }: { id: string }) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const handleDelete = () => {

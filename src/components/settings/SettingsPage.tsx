@@ -1,7 +1,7 @@
 // components/settings/SettingsPage.tsx
 'use client';
 
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui';
 import GeneralSettings from './GeneralSettings';
 import UserSettings from './UserSettings';
 import SystemSettings from './SystemSettings';

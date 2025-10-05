@@ -2,12 +2,8 @@
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  orderSchema,
-  OrderSchema,
-  OrderSchemaInput,
-} from '@/lib/validations/order';
-import { Button } from '@/components/ui/button';
+import { orderSchema, OrderSchemaInput } from '@/lib/validations/order';
+import { Button } from '@/components/ui';
 import {
   Form,
   FormField,
@@ -15,28 +11,19 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+} from '@/components/ui';
+import { Input } from '@/components/ui';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+} from '@/components/ui';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
 import { toast } from 'sonner';
 import { useTransition } from 'react';
-
-type ProductOption = { id: string; name: string; price: number };
-
-type Props = {
-  products: ProductOption[];
-  defaultValues?: Partial<OrderSchema>;
-  action?: (formData: FormData) => Promise<void>;
-  isEdit?: boolean;
-  orderId?: string;
-};
+import { OrdersProps } from '@/lib/types';
 
 export default function OrderForm({
   products,
@@ -44,7 +31,7 @@ export default function OrderForm({
   action,
   isEdit = false,
   orderId,
-}: Props) {
+}: OrdersProps) {
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<OrderSchemaInput>({

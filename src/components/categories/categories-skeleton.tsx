@@ -1,5 +1,5 @@
 // components/categories/categories-skeleton.tsx
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@/components/ui';
 
 export default function CategoriesSkeleton({ rows = 6 }: { rows?: number }) {
   return (

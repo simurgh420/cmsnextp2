@@ -2,7 +2,7 @@ import OrderTable from '@/components/orders/OrderTable';
 import { getOrders } from './actions';
 import Link from 'next/link';
 import { FaPlus } from 'react-icons/fa';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui';
 import { Suspense } from 'react';
 import { OrderTableSkeleton } from '@/components/orders/order-table-skeleton';
 

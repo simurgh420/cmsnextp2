@@ -1,9 +1,9 @@
 // components/settings/UserSettings.tsx
 'use client';
 
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui';
+import { Input } from '@/components/ui';
+import { Button } from '@/components/ui';
 
 export default function UserSettings() {
   return (

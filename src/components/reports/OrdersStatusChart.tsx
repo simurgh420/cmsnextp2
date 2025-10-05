@@ -2,7 +2,7 @@
 'use client';
 
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui';
 import { OrdersByStatus } from '@/lib/types';
 
 const COLORS = ['#facc15', '#22c55e', '#3b82f6', '#ef4444'];

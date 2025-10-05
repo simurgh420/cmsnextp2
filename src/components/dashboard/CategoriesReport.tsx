@@ -2,7 +2,7 @@
 'use client';
 
 import { CategoriesKpis } from '@/lib/types';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui';
 
 export default function CategoriesReport({
   data,

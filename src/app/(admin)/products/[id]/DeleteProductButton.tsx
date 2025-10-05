@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react';
 import { Trash2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui';
 import {
   Dialog,
   DialogContent,

@@ -10,7 +10,7 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from 'recharts';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui';
 import { OrdersByDate } from '@/lib/types';
 
 export default function OrdersLineChart({ data }: { data: OrdersByDate[] }) {

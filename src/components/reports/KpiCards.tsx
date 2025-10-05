@@ -1,5 +1,5 @@
 // components/reports/KpiCards.tsx
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
 import { Kpis } from '@/lib/types';
 
 export default function KpiCards({ kpis }: { kpis: Kpis }) {

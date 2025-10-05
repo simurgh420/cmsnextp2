@@ -1,5 +1,4 @@
 // components/reports/ReportsDashboard.tsx
-'use client';
 
 import { ReportsData } from '@/lib/types';
 import KpiCards from './KpiCards';

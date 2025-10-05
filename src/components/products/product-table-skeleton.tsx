@@ -1,5 +1,5 @@
 // components/products/product-table-skeleton.tsx
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@/components/ui';
 
 function TableHeaderSkeleton({ cols }: { cols: number }) {
   return (
