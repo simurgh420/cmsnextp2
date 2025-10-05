@@ -24,22 +24,35 @@ export async function getCommentById(id: string) {
 }
 
 // لیست همه کامنت‌ها (ادمین → شامل Pending و Rejected)
-export async function listAllComments() {
-  const comments = await prisma.comment.findMany({
-    orderBy: { createdAt: 'desc' },
-    include: { product: true }, // برای نمایش نام محصول همزمان
-  });
+export async function listAllComments(page: number = 1, pageSize: number = 5) {
+  const [comments, total] = await Promise.all([
+    prisma.comment.findMany({
+      orderBy: { createdAt: 'desc' },
+      include: { product: true },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    }),
+    prisma.comment.count(),
+  ]);
+
   const userIds = comments.map((c) => c.userId).filter(Boolean) as string[];
   const client = await clerkClient();
   const { data: users } = await client.users.getUserList({
     userId: userIds,
   });
 
-  return comments.map((c) => ({
+  const item = comments.map((c) => ({
     ...c,
     userName:
       users.find((u: User) => u.id === c.userId)?.fullName ?? 'کاربر ناشناس',
   }));
+  return {
+    item,
+    total,
+    totalPages: Math.ceil(total / pageSize),
+    page,
+    pageSize,
+  };
 }
 
 // ایجاد کامنت جدید

@@ -4,9 +4,16 @@ import { Button } from '@/components/ui';
 import { getAllCommentsAction } from './actions';
 import { Suspense } from 'react';
 import { CommentsTableSkeleton } from './_components/comment-table-skeleton';
+import { Pagination } from '@/components/Pagination';
 
-export default async function CommentsPage() {
-  const comments = await getAllCommentsAction();
+export default async function CommentsPage({
+  searchParams,
+}: {
+  searchParams: { page?: string; pageSize?: string };
+}) {
+  const page = Number(searchParams.page) || 1;
+  const pageSize = Number(searchParams.pageSize) || 5;
+  const { item, totalPages } = await getAllCommentsAction(page, pageSize);
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">مدیریت کامنت‌ها</h1>
@@ -15,7 +22,8 @@ export default async function CommentsPage() {
       </Link>
 
       <Suspense fallback={<CommentsTableSkeleton rows={8} />}>
-        <CommentsTable comments={comments} />
+        <CommentsTable comments={item} />
+        <Pagination page={page} totalPages={totalPages} />
       </Suspense>
     </div>
   );
