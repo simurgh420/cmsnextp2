@@ -100,7 +100,7 @@ npm run dev
 
 ## 📊 مدل‌های دیتابیس (Prisma)
 
-- Product, Order, Category, Comment, User  
+- Product, Order, Category, Comment
   (با روابط و اعتبارسنجی کامل)
 
 ---
