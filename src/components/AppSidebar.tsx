@@ -49,8 +49,6 @@ export default function AppSidebar({
 
           {isExpanded && (
             <div className="space-y-1 ps-6">
-              {' '}
-              {/* 👈 به جای ml-6 */}
               {item.children.map((child: any) => {
                 const childActive = pathname.startsWith(child.href || '');
                 return (
