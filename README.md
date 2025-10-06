@@ -1,40 +1,49 @@
 # CMSNextP2 – پنل مدیریت فارسی (RTL) با Next.js 15
 
-[![Next.js](https://img.shields.io/badge/Next.js-15-black)]()
-[![Prisma](https://img.shields.io/badge/Prisma-ORM-blue)]()
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-DB-336791)]()
-[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v4-38B2AC)]()
-[![Clerk](https://img.shields.io/badge/Auth-Clerk-orange)]()
+[![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
+[![Prisma](https://img.shields.io/badge/Prisma-ORM-blue)](https://www.prisma.io/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-DB-336791)](https://www.postgresql.org/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v4-38B2AC)](https://tailwindcss.com/)
+[![Clerk](https://img.shields.io/badge/Auth-Clerk-orange)](https://clerk.com/)
 
 یک **پنل مدیریت مدرن و راست‌چین (RTL-first)** برای CMS و فروشگاه آنلاین، ساخته‌شده با **Next.js 15، Prisma و PostgreSQL**.  
 این پروژه به‌عنوان یک **نمونه کامل برای رزومه** طراحی شده و معماری سه‌لایه (Presentation → Application → Infrastructure) را پیاده‌سازی می‌کند.
 
-<<<<<<< HEAD
-=======
+---
+
 ## 🖼 تصاویر دمو
 
-
 ### داشبورد
+
 ![Dashboard](public/demo/dashboard.png)
 
 ### محصولات
+
 ![Products](public/demo/products.png)
 
+---
 
->>>>>>> 9415b3deb66685f638c3f1102165f17e56b10e51
 ## 🌐 نمایش زنده
 
 [مشاهده دمو آنلاین](https://cmsnextp2.vercel.app/dashboard) 🚀
 
 ---
 
-## 🚀 تکنولوژی‌ها
+## 🚀 تکنولوژی‌ها و ابزارها
 
-| لایه           | ابزارها                                                                      |
-| -------------- | ---------------------------------------------------------------------------- |
-| Presentation   | Next.js 15 (App Router), Tailwind v4 (RTL), shadcn/ui, React Hook Form + Zod |
-| Application    | Zustand (state), Sonner (toast), Custom Hooks (pagination, search)           |
-| Infrastructure | Prisma ORM, PostgreSQL, Clerk (Auth & Middleware), Husky (CI/CD)             |
+- [Next.js 15 (App Router)](https://nextjs.org/docs/app) — فریم‌ورک React SSR/ISR/SSG
+- [TypeScript (strict)](https://www.typescriptlang.org/)
+- [Prisma ORM](https://www.prisma.io/) + [PostgreSQL](https://www.postgresql.org/)
+- [Tailwind CSS v4 (RTL)](https://tailwindcss.com/)
+- [shadcn/ui](https://ui.shadcn.com/) (Table, Dialog, Form, ...)
+- [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/) (اعتبارسنجی فرم)
+- [Clerk](https://clerk.com/) (احراز هویت و محافظت از مسیرها)
+- [Zustand](https://zustand-demo.pmnd.rs/) (state management)
+- [Sonner](https://sonner.emilkowal.ski/) (toast notifications)
+- [Lucide React](https://lucide.dev/) و [React Icons](https://react-icons.github.io/react-icons/)
+- [Recharts](https://recharts.org/) (نمودارها و داشبورد)
+- [Husky](https://typicode.github.io/husky/) (pre-commit hooks)
+- [Turbopack](https://turbo.build/pack) (dev/build)
 
 ---
 
@@ -52,7 +61,7 @@
 
 ## 📁 ساختار پروژه
 
-\`\`\`
+```
 src/
 ├── app/ (admin routes, api, auth pages)
 ├── components/ (ui, layout, features)
@@ -61,7 +70,7 @@ src/
 ├── stores/ (zustand)
 ├── prisma/ (schema & migrations)
 └── public/ (assets)
-\`\`\`
+```
 
 ---
 
@@ -76,14 +85,16 @@ src/
 
 ## 🛠 راه‌اندازی
 
-\`\`\`bash
+```bash
 git clone <repo>
 cd cmsnextp2
 npm install
-cp .env.example .env # Clerk & DATABASE_URL
+cp .env.example .env   # Clerk & DATABASE_URL
 npx prisma migrate dev
 npm run dev
-\`\`\`
+```
+
+بعد از اجرای این دستورات، پروژه روی http://localhost:3000 بالا میاد ✅
 
 ---
 
@@ -107,6 +118,8 @@ npm run dev
 ## 📄 لایسنس
 
 MIT
+
+---
 
 ## 👤 توسعه‌دهنده
 
