@@ -5,6 +5,7 @@ test('take screenshots of main pages', async ({ page }) => {
 
   // صفحه اصلی
   await page.goto('/');
+  await page.waitForTimeout(200);
   await page.screenshot({ path: 'public/demo/home.png', fullPage: true });
 
   // داشبورد
@@ -13,7 +14,7 @@ test('take screenshots of main pages', async ({ page }) => {
   await page.waitForSelector('.recharts-wrapper', { state: 'visible' });
 
   // کمی هم صبر برای انیمیشن
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(1000);
   await page.screenshot({ path: 'public/demo/dashboard.png', fullPage: true });
 
   // محصولات

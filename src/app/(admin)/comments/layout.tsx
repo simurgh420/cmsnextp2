@@ -1,17 +1,19 @@
 import type { ReactNode } from 'react';
-import { Sidebar } from '@/components/layout/Sidebar/Sidebar';
+import AppSidebar from '@/components/AppSidebar';
 import { Header } from '@/components/layout/Header/Header';
 
 export default function CommentsLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen bg-background transition-colors duration-300">
-      {/* سایدبار */}
-      <Sidebar />
-      <div className="flex-1 flex flex-col">
-        <Header />
-        {/* محتوای اصلی */}
-        <main className="flex-1 p-4 md:p-6">{children}</main>
-      </div>
+      {/* سایدبار جدید */}
+      <AppSidebar>
+        <div className="flex-1 flex flex-col">
+          {/* هدر */}
+          <Header />
+          {/* محتوای اصلی */}
+          <main className="flex-1 p-4 md:p-6">{children}</main>
+        </div>
+      </AppSidebar>
     </div>
   );
 }

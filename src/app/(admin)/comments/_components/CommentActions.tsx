@@ -8,18 +8,20 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
+  DialogClose,
 } from '@/components/ui';
 import { Button } from '@/components/ui';
 import Link from 'next/link';
 import { useTransition } from 'react';
 import { commentQuickAction } from '../actions';
-
 import { useNotify } from '@/lib/notify';
 import { useAuth } from '@clerk/nextjs';
+
 export default function CommentActions({ id }: { id: string }) {
   const { userId } = useAuth();
   const [isPending, startTransition] = useTransition();
   const notify = useNotify();
+
   function handleAction(action: 'approve' | 'reject' | 'delete') {
     if (!userId) {
       notify({
@@ -37,17 +39,17 @@ export default function CommentActions({ id }: { id: string }) {
           title: 'موفقیت',
           message:
             action === 'approve'
-              ? '✅کامنت تأیید شد'
+              ? '✅ کامنت تأیید شد'
               : action === 'reject'
-                ? '❌کامنت رد شد'
-                : '❌کامنت حذف شد',
+                ? '❌ کامنت رد شد'
+                : '❌ کامنت حذف شد',
           type: 'success',
           duration: 5000,
         });
       } catch (error) {
         notify({
           title: 'خطا',
-          message: '❌خطا در انجام عملیات',
+          message: '❌ خطا در انجام عملیات',
           type: 'error',
           duration: Infinity,
         });
@@ -74,20 +76,22 @@ export default function CommentActions({ id }: { id: string }) {
 
       <Button
         size="sm"
-        variant="default"
+        variant="outline"
         disabled={isPending}
         onClick={() => handleAction('approve')}
       >
-        تأیید
+        {isPending ? '...' : 'تأیید'}
       </Button>
+
       <Button
         size="sm"
         variant="secondary"
         disabled={isPending}
         onClick={() => handleAction('reject')}
       >
-        رد
+        {isPending ? '...' : 'رد'}
       </Button>
+
       <Dialog>
         <DialogTrigger asChild>
           <Button size="sm" variant="destructive" disabled={isPending}>
@@ -102,13 +106,15 @@ export default function CommentActions({ id }: { id: string }) {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="secondary">انصراف</Button>
+            <DialogClose asChild>
+              <Button variant="secondary">انصراف</Button>
+            </DialogClose>
             <Button
               variant="destructive"
               disabled={isPending}
               onClick={() => handleAction('delete')}
             >
-              تأیید حذف
+              {isPending ? '...' : 'تأیید حذف'}
             </Button>
           </DialogFooter>
         </DialogContent>

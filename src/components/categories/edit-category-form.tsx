@@ -22,6 +22,7 @@ export default function EditCategoryForm({ category }: { category: Category }) {
     },
   });
   const notify = useNotify();
+
   const onSubmit = async (data: CategorySchema) => {
     try {
       await updateCategory(category.id, data);
@@ -36,32 +37,47 @@ export default function EditCategoryForm({ category }: { category: Category }) {
         title: 'خطا',
         message: '❌ارتباط با سرور برقرار نشد',
         type: 'error',
-        duration: Infinity, // toast تا وقتی کاربر نبنده می‌مونه
+        duration: Infinity,
       });
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="space-y-6 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-gray-50 dark:bg-neutral-900 p-6 shadow-sm transition-colors duration-300"
+    >
       <div>
         <label className="block text-sm font-medium mb-1 text-foreground">
           نام دسته‌بندی
         </label>
-        <Input {...register('name')} />
+        <Input
+          {...register('name')}
+          className="bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-foreground"
+        />
         {errors.name && (
           <p className="text-destructive text-sm mt-1">{errors.name.message}</p>
         )}
       </div>
+
       <div>
         <label className="block text-sm font-medium mb-1 text-foreground">
           اسلاگ
         </label>
-        <Input {...register('slug')} />
+        <Input
+          {...register('slug')}
+          className="bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-foreground"
+        />
         {errors.slug && (
           <p className="text-destructive text-sm mt-1">{errors.slug.message}</p>
         )}
       </div>
-      <Button type="submit" disabled={isSubmitting}>
+
+      <Button
+        type="submit"
+        disabled={isSubmitting}
+        className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2 rounded-md transition-colors"
+      >
         {isSubmitting ? 'در حال ذخیره...' : 'ذخیره تغییرات'}
       </Button>
     </form>

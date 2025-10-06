@@ -42,7 +42,7 @@ export default function DashboardSkeleton() {
       {/* بخش سفارش‌ها */}
       <section className="space-y-4">
         <h2 className="text-lg font-semibold text-foreground">سفارش‌ها</h2>
-        <div className="rounded-lg border bg-card p-4 space-y-4">
+        <div className="rounded-lg border border-neutral-200 dark:border-neutral-700 bg-gray-50 dark:bg-neutral-900 p-4 space-y-4 shadow-sm">
           <SectionHeaderSkeleton />
           <CardGridSkeleton cols={3} count={3} />
         </div>
@@ -51,7 +51,7 @@ export default function DashboardSkeleton() {
       {/* بخش محصولات */}
       <section className="space-y-4">
         <h2 className="text-lg font-semibold text-foreground">محصولات</h2>
-        <div className="rounded-lg border bg-card p-4 space-y-4">
+        <div className="rounded-lg border border-neutral-200 dark:border-neutral-700 bg-gray-50 dark:bg-neutral-900 p-4 space-y-4 shadow-sm">
           <SectionHeaderSkeleton />
           <CardGridSkeleton cols={4} count={4} />
         </div>

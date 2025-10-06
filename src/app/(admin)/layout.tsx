@@ -1,4 +1,5 @@
 import { auth } from '@clerk/nextjs/server';
+import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import React from 'react';
 
@@ -10,8 +11,8 @@ export default async function AdminLayout({
   const { userId } = await auth();
 
   // بررسی مسیر فعلی برای صفحات action
-  const pathname =
-    typeof window !== 'undefined' ? window.location.pathname : '';
+  const headersList = await headers();
+  const pathname = headersList.get('x-pathname') || ''; // یا از x-url استفاده کن
   const isActionRoute =
     pathname.includes('/new') ||
     pathname.includes('/edit') ||

@@ -20,9 +20,7 @@ const NewProductPage = async () => {
           </Button>
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-foreground">
-            افزودن محصول جدید
-          </h1>
+          <h1 className="text-2xl font-bold">افزودن محصول جدید</h1>
           <p className="text-muted-foreground mt-1">
             اطلاعات محصول جدید را وارد کنید
           </p>

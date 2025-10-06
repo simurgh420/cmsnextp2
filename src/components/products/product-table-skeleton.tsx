@@ -51,7 +51,7 @@ export function ProductTableSkeleton({
   cols?: number;
 }) {
   return (
-    <div className="rounded-lg border bg-card">
+    <div className="rounded-lg border border-neutral-200 dark:border-neutral-700 bg-gray-50 dark:bg-neutral-900 shadow-sm">
       {/* Table Header */}
       <TableHeaderSkeleton cols={cols} />
 
