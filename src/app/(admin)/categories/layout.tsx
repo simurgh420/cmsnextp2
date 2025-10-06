@@ -1,6 +1,6 @@
-import type { ReactNode } from "react";
-import AppSidebar from "@/components/AppSidebar"; // 👈 سایدبار جدید
-import { Header } from "@/components/layout/Header/Header";
+import type { ReactNode } from 'react';
+import AppSidebar from '@/components/AppSidebar'; // 👈 سایدبار جدید
+import { Header } from '@/components/layout/Header/Header';
 
 export default function CategoriesLayout({
   children,
