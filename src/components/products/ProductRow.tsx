@@ -84,7 +84,7 @@ export const ProductRow = ({ product }: { product: Product }) => {
         {/* دکمه ویرایش */}
         {userId ? (
           <Link
-            href={`/admin/products/edit/${product.id}`}
+            href={`/products/edit/${product.id}`}
             className="inline-flex items-center"
           >
             <Button variant="outline" size="sm" className="text-xs h-8 px-3">

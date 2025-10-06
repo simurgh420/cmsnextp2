@@ -37,7 +37,7 @@ export default clerkMiddleware(async (auth, req) => {
 
   // اگر کاربر لاگین کرده و می‌خواهد به صفحه sign-in/sign-up برود
   if (userId && (url.pathname === '/sign-in' || url.pathname === '/sign-up')) {
-    return NextResponse.redirect(new URL('/admin/dashboard', req.url));
+    return NextResponse.redirect(new URL('/dashboard', req.url));
   }
 });
 
