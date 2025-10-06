@@ -11,6 +11,7 @@
     "format": "prettier --write .",
     "prepare": "is-ci || husky install",
     "generate": "npx prisma generate",
+    "screenshot": "playwright test tests/screenshot.spec.ts",
     "migrate": "npx prisma migrate dev",
     "studio": "npx prisma studio"
   },
@@ -46,14 +47,15 @@
     "zustand": "^5.0.8"
   },
   "devDependencies": {
-    "husky": "^9.1.7",
     "@eslint/eslintrc": "^3",
+    "@playwright/test": "^1.55.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.3",
+    "husky": "^9.1.7",
     "is-ci": "^4.1.0",
     "prettier": "^3.6.2",
     "tailwindcss": "^4",
