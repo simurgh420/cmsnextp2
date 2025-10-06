@@ -7,7 +7,7 @@
 [![Clerk](https://img.shields.io/badge/Auth-Clerk-orange)](https://clerk.com/)
 
 یک **پنل مدیریت مدرن و راست‌چین (RTL-first)** برای CMS و فروشگاه آنلاین، ساخته‌شده با **Next.js 15، Prisma و PostgreSQL**.  
-این پروژه به‌عنوان یک **نمونه کامل برای رزومه** طراحی شده و معماری سه‌لایه (Presentation → Application → Infrastructure) را پیاده‌سازی می‌کند.
+امعماری سه‌لایه (Presentation → Application → Infrastructure) را پیاده‌سازی می‌کند.
 
 ---
 
