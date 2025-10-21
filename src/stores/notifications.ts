@@ -1,6 +1,7 @@
 'use client';
+import { NotificationType } from '@/lib/types';
 import { create } from 'zustand';
-export type NotificationType = 'success' | 'error' | 'info' | 'warning';
+
 
 export type NotificationItem = {
   id: string;
@@ -30,6 +31,7 @@ export const useNotifications = create<NotificationsState>((set, get) => ({
       read: false,
       ...payload,
     };
+
     set((s) => ({ items: [item, ...s.items].slice(0, 100) })); // محدودیت ۱۰۰ تا برای کنترل حافظه
 
     return item;

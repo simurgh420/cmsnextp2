@@ -133,11 +133,19 @@ export type DashboardData = {
     kpis: CategoriesKpis;
   };
 };
-
 // notif types
+export type NotificationType = 'success' | 'error' | 'info' | 'warning';
 export type NotifyArgs = {
   title?: string;
   message: string;
-  type?: 'success' | 'error' | 'info' | 'warning';
+  type?: NotificationType;
   duration?: number; // 👈 مدت زمان نمایش toast
 };
+//PWA types
+ export type PWAOptions = {
+    dest?: string;
+    disable?: boolean;
+    register?: boolean;
+    skipWaiting?: boolean;
+    [key: string]: any;
+  };

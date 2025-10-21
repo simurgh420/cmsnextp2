@@ -6,7 +6,7 @@ export const orderSchema = z.object({
   quantity: z.coerce
     .number()
     .min(1, { message: 'حداقل یک عدد سفارش لازم است' }),
-  status: z.nativeEnum(OrderStatus).default(OrderStatus.PENDING),
+  status: z.enum(OrderStatus).default(OrderStatus.PENDING),
 });
 export type OrderSchema = z.output<typeof orderSchema>; // داده‌ی نهایی (بعد از پارس)
 export type OrderSchemaInput = z.input<typeof orderSchema>; // داده‌ی خام (فرم)
