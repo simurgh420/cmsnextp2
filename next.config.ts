@@ -1,7 +1,7 @@
 import type { NextConfig } from 'next';
 import withPWA from 'next-pwa';
+import defaultRuntimeCaching from 'next-pwa/cache';
 const nextConfig: NextConfig = {
-  /* config options here */
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'i.ebayimg.com' },
@@ -9,10 +9,26 @@ const nextConfig: NextConfig = {
     ],
   },
 };
-// ترکیب تنظیمات PWA با کانفیگ اصلی
+
 export default withPWA({
-  dest: 'public', // فایل‌های service worker و manifest در public ساخته می‌شن
-  register: true, // service worker به صورت خودکار رجیستر می‌شه
-  skipWaiting: true, // نسخه جدید SW سریع فعال می‌شه
-  disable: process.env.NODE_ENV === 'development', // در dev غیرفعال
+  dest: 'public',
+  register: true,
+  skipWaiting: true,
+  disable: process.env.NODE_ENV === 'development',
+  runtimeCaching: [
+    ...defaultRuntimeCaching,
+    {
+      urlPattern: /.*/i, // همه‌ی درخواست‌ها
+      handler: 'NetworkFirst',
+      options: {
+        cacheName: 'http-cache',
+        expiration: {
+          maxEntries: 200,
+          maxAgeSeconds: 24 * 60 * 60, // یک روز
+        },
+        // اینجا صفحه‌ی آفلاین رو معرفی می‌کنیم
+        fallback: '/offline',
+      },
+    },
+  ],
 })(nextConfig);
