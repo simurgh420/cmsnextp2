@@ -1,7 +1,6 @@
 import { getProductsForSelect } from '@/app/(admin)/products/actions';
-import OrderForm from '@/components/orders/OrderForm';
-import { createOrder } from '../actions';
 import { Suspense } from 'react';
+import NewOrderClient from './NewOrderClient';
 export default async function NewOrderPage() {
   const products = await getProductsForSelect();
 
@@ -9,7 +8,7 @@ export default async function NewOrderPage() {
     <div className="space-y-6">
       <h1 className="text-xl font-bold">ایجاد سفارش جدید</h1>
       <Suspense fallback={<div>در حال بارگذاری فرم...</div>}>
-        <OrderForm products={products} action={createOrder} />
+          <NewOrderClient products={products} />
       </Suspense>
     </div>
   );

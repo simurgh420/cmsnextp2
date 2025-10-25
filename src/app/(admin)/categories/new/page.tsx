@@ -1,4 +1,3 @@
-
 import NewCategoryClient from './NewCategoryClient';
 
 const NewCategoryPage = () => {

@@ -19,16 +19,13 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui';
-import { useNotify } from '@/lib/notify';
-
 import { CommentFormProps } from '@/lib/types';
 
 export default function CommentForm({
   products,
   initialData,
-  action,
+  onSubmit,
 }: CommentFormProps) {
-  const notify = useNotify();
   const form = useForm<Omit<CommentSchema, 'userId'>>({
     resolver: zodResolver(commentSchema),
     defaultValues: {
@@ -36,26 +33,6 @@ export default function CommentForm({
       productId: initialData?.productId ?? '',
     },
   });
-  const onSubmit = async (data: CommentSchema) => {
-    try {
-      await action(data); // 👈 مستقیم اکشن رو صدا می‌زنی
-      notify({
-        title: 'موفقیت',
-        message: 'کامنت با موفقیت ثبت شد ✅',
-        type: 'success',
-        duration: 5000,
-      });
-      form.reset(); // 👈 اختیاری: بعد از ثبت موفق فرم رو ریست کن
-    } catch (error) {
-      console.error(error);
-      notify({
-        title: 'خطا',
-        message: 'خطا در ثبت کامنت ❌',
-        type: 'error',
-        duration: Infinity,
-      });
-    }
-  };
   return (
     <Form {...form}>
       <form

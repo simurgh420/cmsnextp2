@@ -1,6 +1,6 @@
 'use client';
 
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { orderSchema, OrderSchemaInput } from '@/lib/validations/order';
 import { Button } from '@/components/ui';
@@ -21,19 +21,14 @@ import {
   SelectValue,
 } from '@/components/ui';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
-import { toast } from 'sonner';
-import { useTransition } from 'react';
 import { OrdersProps } from '@/lib/types';
-import { useNotify } from '@/lib/notify';
 export default function OrderForm({
   products,
   defaultValues,
-  action,
+  onSubmit,
   isEdit = false,
-  orderId,
+  isPending = false,
 }: OrdersProps) {
-  const [isPending, startTransition] = useTransition();
-  const notify = useNotify();
   const form = useForm<OrderSchemaInput>({
     resolver: zodResolver(orderSchema),
     defaultValues: {
@@ -42,45 +37,6 @@ export default function OrderForm({
       status: defaultValues?.status ?? 'PENDING',
     },
   });
-
-  const onSubmit: SubmitHandler<OrderSchemaInput> = (data) => {
-    if (!action) return;
-
-    const formData = new FormData();
-    formData.append('productId', data.productId);
-    formData.append('quantity', String(data.quantity));
-    formData.append('status', data.status || 'PENDING');
-
-    if (isEdit && orderId) {
-      formData.append('orderId', orderId);
-    }
-
-    startTransition(async () => {
-      try {
-        await action(formData);
-        notify({
-          title: 'موفقیت',
-          message: isEdit
-            ? '✅سفارش با موفقیت به‌روزرسانی شد'
-            : '✅سفارش با موفقیت ثبت شد',
-          type: 'success',
-          duration: 5000,
-        });
-        if (!isEdit) {
-          form.reset();
-        }
-      } catch (error: any) {
-        notify({
-          title: 'خطا',
-          message:
-            error?.message ||
-            (isEdit ? '❌خطا در به‌روزرسانی سفارش' : '❌خطا در ثبت سفارش'),
-          type: 'error',
-          duration: Infinity,
-        });
-      }
-    });
-  };
 
   const selectedProduct = products.find(
     (p) => p.id === form.watch('productId'),

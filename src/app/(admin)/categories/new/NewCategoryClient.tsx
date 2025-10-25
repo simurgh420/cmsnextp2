@@ -2,7 +2,7 @@
 
 import { CategorySchema } from '@/lib/validations/category';
 import { useNotify } from '@/lib/notify';
-import  CategoryForm  from '@/components/categories/CategoryForm';
+import CategoryForm from '@/components/categories/CategoryForm';
 import { createCategory } from '../actions';
 
 export default function NewCategoryClient() {

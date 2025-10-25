@@ -1,6 +1,6 @@
 // types.ts
 import { Prisma, Status, Product, Comment } from '@prisma/client';
-import { OrderSchema } from './validations/order';
+import { OrderSchema, OrderSchemaInput } from './validations/order';
 import { ProductSchema } from './validations/product';
 import { CommentSchema } from './validations/comment';
 import { CategorySchema } from './validations/category';
@@ -37,7 +37,7 @@ export type CommentFormProps = {
   products: { id: string; name: string }[];
   users?: { id: string; name: string }[];
   initialData?: Partial<CommentSchema>;
-  action: (data: CommentSchema) => Promise<void>;
+  onSubmit: (data: CommentSchema) => Promise<void>;
 };
 export type UpdateCommentInput = {
   id: string;
@@ -59,13 +59,12 @@ export type OrderWithExtras = OrderWithProduct & {
   userName: string;
 };
 
-type ProductOption = { id: string; name: string; price: number };
 export type OrdersProps = {
-  products: ProductOption[];
-  defaultValues?: Partial<OrderSchema>;
-  action?: (formData: FormData) => Promise<void>;
+  products: { id: string; name: string; price: number }[];
+  defaultValues?: Partial<OrderSchemaInput>;
+  onSubmit: (data: OrderSchemaInput) => Promise<void>;
+  isPending?: boolean;
   isEdit?: boolean;
-  orderId?: string;
 };
 
 // گزارش‌ها و داشبورد

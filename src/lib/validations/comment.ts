@@ -12,7 +12,7 @@ export type CommentSchema = z.infer<typeof commentSchema>;
 // ✅ برای آپدیت (ویرایش متن یا تغییر وضعیت)
 export const updateCommentSchema = z.object({
   content: z.string().min(2, 'متن کامنت الزامی است').optional(),
-  status: z.nativeEnum(CommentStatus).optional(),
+  status: z.enum(CommentStatus).optional(),
 });
 export type UpdateCommentSchema = z.infer<typeof updateCommentSchema>;
 
