@@ -12,7 +12,6 @@ const toastMap: Record<string, (msg: string) => void> = {
 };
 export function useNotify() {
   const add = useNotifications((s) => s.add);
-  
   return ({ title, message, type = 'info' }: NotifyArgs) => {
     (toastMap[type] ?? toast.message)(message);
     add({ title, message, type });

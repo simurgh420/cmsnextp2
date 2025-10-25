@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 import { Product } from '@prisma/client';
 import Link from 'next/link';

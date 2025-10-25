@@ -6,7 +6,7 @@ import { useNotify } from '@/lib/notify';
 import { useAuth } from '@clerk/nextjs';
 
 export default function DeleteCategoryButton({ id }: { id: string }) {
-  const { userId } = useAuth(); // اضافه شد
+  const { userId } = useAuth();
   const [isPending, startTransition] = useTransition();
   const notify = useNotify();
   const handleDelete = async () => {

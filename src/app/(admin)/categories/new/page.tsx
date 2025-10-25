@@ -1,10 +1,11 @@
-import NewCategoryForm from '@/components/categories/new-category-form';
+
+import NewCategoryClient from './NewCategoryClient';
 
 const NewCategoryPage = () => {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">ایجاد دسته‌بندی جدید</h1>
-      <NewCategoryForm />
+      <NewCategoryClient />
     </div>
   );
 };

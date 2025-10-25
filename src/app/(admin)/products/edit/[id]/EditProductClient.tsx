@@ -4,8 +4,8 @@ import { useRouter } from 'next/navigation';
 import { Product, Category } from '@prisma/client';
 import { ProductFormData } from '@/lib/types';
 import { ProductForm } from '@/components/products/ProductForm';
-import { toast } from 'sonner';
 import { updateProduct } from '../../actions';
+import { useNotify } from '@/lib/notify';
 
 interface Props {
   product: Product;
@@ -14,16 +14,26 @@ interface Props {
 
 export default function EditProductClient({ product, categories }: Props) {
   const router = useRouter();
+  const notify = useNotify();
 
   const handleSubmit = async (data: ProductFormData) => {
     try {
       await updateProduct(product.id, data);
-
-      toast.success('محصول با موفقیت ویرایش شد');
+      notify({
+        title: 'موفقیت',
+        message: `نحصول «${product.name}» با موفقیت ویرایش شد`,
+        type: 'success',
+        duration: 5000,
+      });
       router.push('/products');
     } catch (error) {
       console.error('Update failed:', error);
-      toast.error('خطا در ویرایش محصول');
+      notify({
+        title: 'خطا',
+        message: '❌خطا در ویرایش محصول',
+        type: 'error',
+        duration: Infinity,
+      });
     }
   };
 

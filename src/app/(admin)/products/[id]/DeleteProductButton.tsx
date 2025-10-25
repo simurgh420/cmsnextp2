@@ -14,6 +14,7 @@ import {
 import { toast } from 'sonner';
 import { deleteProduct } from '../actions';
 import { useAuth } from '@clerk/nextjs';
+import { useNotify } from '@/lib/notify';
 
 export default function DeleteProductButton({
   id,
@@ -23,17 +24,28 @@ export default function DeleteProductButton({
   name: string;
 }) {
   const { userId } = useAuth();
+  const notify = useNotify();
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const handleDelete = () => {
     startTransition(async () => {
       try {
         await deleteProduct(id);
-        toast.success('محصول با موفقیت حذف شد');
+        notify({
+          title: 'موفقیت',
+          message: 'محصول با موفقیت حذف شد ',
+          type: 'success',
+          duration: 5000,
+        });
         setOpen(false);
       } catch (error) {
         console.error('Delete failed:', error);
-        toast.error('حذف محصول با خطا مواجه شد');
+        notify({
+          title: 'خطا',
+          message: '❌خطا در حذف محصول',
+          type: 'error',
+          duration: Infinity,
+        });
       }
     });
   };

@@ -3,6 +3,7 @@ import { Prisma, Status, Product, Comment } from '@prisma/client';
 import { OrderSchema } from './validations/order';
 import { ProductSchema } from './validations/product';
 import { CommentSchema } from './validations/comment';
+import { CategorySchema } from './validations/category';
 // Product types and props:
 export type ProductFormData = {
   name: string;
@@ -23,6 +24,11 @@ export type Category = {
   name: string;
   slug: string;
 };
+export interface CategoryFormProps {
+  initialData?: Pick<Category, 'id' | 'name' | 'slug'> | null;
+  onSubmit: (data: CategorySchema) => Promise<void> | void;
+}
+
 // Comment types and props
 export type CommentWithProduct = Comment & {
   product: Product;
@@ -142,10 +148,10 @@ export type NotifyArgs = {
   duration?: number; // 👈 مدت زمان نمایش toast
 };
 //PWA types
- export type PWAOptions = {
-    dest?: string;
-    disable?: boolean;
-    register?: boolean;
-    skipWaiting?: boolean;
-    [key: string]: any;
-  };
+export type PWAOptions = {
+  dest?: string;
+  disable?: boolean;
+  register?: boolean;
+  skipWaiting?: boolean;
+  [key: string]: any;
+};

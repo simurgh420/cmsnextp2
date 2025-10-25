@@ -2,7 +2,6 @@
 import { NotificationType } from '@/lib/types';
 import { create } from 'zustand';
 
-
 export type NotificationItem = {
   id: string;
   title?: string;

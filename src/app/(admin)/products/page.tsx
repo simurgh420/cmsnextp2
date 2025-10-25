@@ -73,5 +73,5 @@ const ProductsPage = async ({
     </div>
   );
 };
-export const revalidate = 3600; // ISR: هر 1 ساعت rebuild
 export default ProductsPage;
+export const revalidate = 3600; // ISR: هر 1 ساعت rebuild

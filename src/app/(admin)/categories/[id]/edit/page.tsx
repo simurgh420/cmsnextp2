@@ -1,6 +1,6 @@
-import EditCategoryForm from '@/components/categories/edit-category-form';
 import { notFound } from 'next/navigation';
 import { getCategory } from '../../actions';
+import EditCategoryClient from './EditCategoryClient';
 
 export default async function EditCategoryPage({
   params,
@@ -24,7 +24,7 @@ export default async function EditCategoryPage({
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">ویرایش دسته‌بندی</h1>
-      <EditCategoryForm category={category} />
+      <EditCategoryClient category={category} />
     </div>
   );
 }
